@@ -20,11 +20,18 @@
                 </form>
                 
                 <div class="d-flex gap-2">
-                    <a href="{{ route('admin.reports.csv', ['start_date' => $startDate, 'end_date' => $endDate]) }}" class="btn btn-success fw-bold">
-                        <i class="fas fa-file-excel me-2"></i>Unduh Excel (CSV)
+                    <a href="{{ route('admin.reports.excel', ['start_date' => $startDate, 'end_date' => $endDate]) }}" class="btn btn-success fw-bold shadow-sm" style="background: linear-gradient(135deg, #43a047, #66bb6a); border:none;">
+                        <i class="fas fa-file-excel me-2"></i>Laporan Excel
                     </a>
-                    <a href="{{ route('admin.reports.pdf', ['start_date' => $startDate, 'end_date' => $endDate]) }}" class="btn btn-danger fw-bold" target="_blank">
-                        <i class="fas fa-file-pdf me-2"></i>Unduh PDF
+                    <a href="{{ route('admin.reports.pdf', ['start_date' => $startDate, 'end_date' => $endDate]) }}" class="btn btn-danger fw-bold shadow-sm" style="background: linear-gradient(135deg, #e53935, #ef5350); border:none;" target="_blank">
+                        <i class="fas fa-file-pdf me-2"></i>Laporan PDF
+                    </a>
+                    <div style="border-left: 2px dashed #ddd; margin: 0 10px;"></div>
+                    <a href="{{ route('admin.backup.full') }}" class="btn text-white fw-bold shadow-sm" style="background: linear-gradient(135deg, #8e24aa, #ba68c8); border:none;" onclick="return confirm('Proses ini akan mengunduh seluruh data toko. Lanjutkan?')">
+                        <i class="fas fa-database me-2"></i>Full Backup Excel
+                    </a>
+                    <a href="{{ route('admin.backup.full_pdf') }}" class="btn text-white fw-bold shadow-sm" style="background: linear-gradient(135deg, #e91e63, #f06292); border:none;" onclick="return confirm('Proses ini akan mengunduh seluruh data toko dalam bentuk PDF. Lanjutkan?')" target="_blank">
+                        <i class="fas fa-file-pdf me-2"></i>Full Backup PDF
                     </a>
                 </div>
             </div>

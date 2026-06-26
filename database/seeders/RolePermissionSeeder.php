@@ -5,16 +5,16 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\PermissionRegistrar;
 
 class RolePermissionSeeder extends Seeder
 {
     public function run(): void
     {
-        app()[\Spatie\Permission\PermissionRegistrar::class]
+        app()[PermissionRegistrar::class]
             ->forgetCachedPermissions();
 
         $permissions = [
-
             'dashboard-view',
 
             'user-view',
@@ -26,39 +26,36 @@ class RolePermissionSeeder extends Seeder
             'product-create',
             'product-edit',
             'product-delete',
-
-            'role-view',
-            'role-create',
-            'role-edit',
-            'role-delete',
         ];
 
         foreach ($permissions as $permission) {
-
             Permission::firstOrCreate([
-                'name' => $permission
+                'name' => $permission,
+                'guard_name' => 'web'
             ]);
         }
 
         $superAdmin = Role::firstOrCreate([
-            'name' => 'Super Admin'
+            'name' => 'Super Admin',
+            'guard_name' => 'web'
         ]);
 
         $admin = Role::firstOrCreate([
-            'name' => 'Admin'
+            'name' => 'Admin',
+            'guard_name' => 'web'
         ]);
 
         $staff = Role::firstOrCreate([
-            'name' => 'Staff'
+            'name' => 'Staff',
+            'guard_name' => 'web'
         ]);
 
         $customer = Role::firstOrCreate([
-            'name' => 'Customer'
+            'name' => 'Customer',
+            'guard_name' => 'web'
         ]);
 
-        $superAdmin->givePermissionTo(
-            Permission::all()
-        );
+        $superAdmin->givePermissionTo(Permission::all());
 
         $admin->givePermissionTo([
             'dashboard-view',
@@ -67,7 +64,7 @@ class RolePermissionSeeder extends Seeder
             'user-edit',
             'product-view',
             'product-create',
-            'product-edit',
+            'product-edit'
         ]);
 
         $staff->givePermissionTo([

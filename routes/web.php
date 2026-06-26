@@ -181,10 +181,12 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::patch('/customers/{customer}/toggle', [\App\Http\Controllers\Admin\CustomerController::class, 'toggle'])->name('customers.toggle');
     Route::delete('/customers/{customer}', [\App\Http\Controllers\Admin\CustomerController::class, 'destroy'])->name('customers.destroy');
 
-    // Laporan Penjualan
+    // Laporan Penjualan & Backup
     Route::get('/reports', [\App\Http\Controllers\Admin\ReportController::class, 'index'])->name('reports.index');
-    Route::get('/reports/csv', [\App\Http\Controllers\Admin\ReportController::class, 'exportCsv'])->name('reports.csv');
+    Route::get('/reports/excel', [\App\Http\Controllers\Admin\ReportController::class, 'exportExcel'])->name('reports.excel');
     Route::get('/reports/pdf', [\App\Http\Controllers\Admin\ReportController::class, 'exportPdf'])->name('reports.pdf');
+    Route::get('/backup/full', [\App\Http\Controllers\Admin\ReportController::class, 'fullBackup'])->name('backup.full');
+    Route::get('/backup/full-pdf', [\App\Http\Controllers\Admin\ReportController::class, 'fullBackupPdf'])->name('backup.full_pdf');
 
     // Manajemen Flash Sale
     Route::resource('flash_sales', \App\Http\Controllers\Admin\FlashSaleController::class)->except(['create', 'edit']);

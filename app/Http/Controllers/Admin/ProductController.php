@@ -232,7 +232,7 @@ class ProductController extends Controller
         ]);
 
         if ($request->stock > $oldStock) {
-            $users = \App\Models\User::where('role', 'user')->get();
+            $users = \App\Models\User::role('user')->get();
             \Illuminate\Support\Facades\Notification::send($users, new \App\Notifications\SystemNotification(
                 'Restock Produk!',
                 "Hore! Stok produk {$product->name} telah ditambah. Yuk buruan beli sebelum kehabisan!",

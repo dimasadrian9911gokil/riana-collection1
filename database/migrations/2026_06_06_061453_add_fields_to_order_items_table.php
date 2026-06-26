@@ -6,23 +6,35 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::table('order_items', function (Blueprint $table) {
-            //
+
+            $table->unsignedBigInteger('order_id')->nullable();
+
+            $table->string('product_name')->nullable();
+
+            $table->integer('price')->default(0);
+
+            $table->integer('qty')->default(1);
+
+            $table->integer('subtotal')->default(0);
+
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::table('order_items', function (Blueprint $table) {
-            //
+
+            $table->dropColumn([
+                'order_id',
+                'product_name',
+                'price',
+                'qty',
+                'subtotal'
+            ]);
+
         });
     }
 };

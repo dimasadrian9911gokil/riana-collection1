@@ -90,47 +90,14 @@ class ReportController extends Controller
         ));
     }
 
-    public function exportCsv(Request $request)
+    public function exportExcel(Request $request)
     {
         $startDate = $request->input('start_date', date('Y-m-01'));
         $endDate = $request->input('end_date', date('Y-m-t'));
         
-        $orders = Order::with('user')
-            ->whereIn('status', ['sudah_dibayar', 'dikemas', 'dikirim', 'selesai'])
-            ->whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59'])
-            ->latest()
-            ->get();
+        $fileName = 'Laporan_Penjualan_' . $startDate . '_sd_' . $endDate . '.xlsx';
 
-        $fileName = 'laporan_penjualan_' . $startDate . '_sd_' . $endDate . '.csv';
-
-        $headers = array(
-            "Content-type"        => "text/csv",
-            "Content-Disposition" => "attachment; filename=$fileName",
-            "Pragma"              => "no-cache",
-            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
-            "Expires"             => "0"
-        );
-
-        $columns = array('Tanggal', 'Invoice', 'Pelanggan', 'Status', 'Total (Rp)');
-
-        $callback = function() use($orders, $columns) {
-            $file = fopen('php://output', 'w');
-            fputcsv($file, $columns);
-
-            foreach ($orders as $order) {
-                $row['Tanggal']  = $order->created_at->format('Y-m-d H:i');
-                $row['Invoice']    = $order->invoice;
-                $row['Pelanggan']  = $order->user->name ?? 'User Dihapus';
-                $row['Status']  = $order->status;
-                $row['Total (Rp)']  = $order->total;
-
-                fputcsv($file, array($row['Tanggal'], $row['Invoice'], $row['Pelanggan'], $row['Status'], $row['Total (Rp)']));
-            }
-
-            fclose($file);
-        };
-
-        return response()->stream($callback, 200, $headers);
+        return \Maatwebsite\Excel\Facades\Excel::download(new \App\Exports\SalesExport($startDate, $endDate), $fileName);
     }
 
     public function exportPdf(Request $request)
@@ -147,7 +114,33 @@ class ReportController extends Controller
         $totalRevenue = $orders->sum('total');
 
         $pdf = Pdf::loadView('admin.reports.pdf', compact('orders', 'startDate', 'endDate', 'totalRevenue'));
+        // Set paper size A4
+        $pdf->setPaper('A4', 'portrait');
         
-        return $pdf->download('laporan_penjualan_'.$startDate.'_sd_'.$endDate.'.pdf');
+        return $pdf->download('Laporan_Penjualan_'.$startDate.'_sd_'.$endDate.'.pdf');
+    }
+
+    public function fullBackup()
+    {
+        $fileName = 'Full_System_Backup_' . date('Y_m_d_H_i_s') . '.xlsx';
+        return \Maatwebsite\Excel\Facades\Excel::download(new \App\Exports\FullBackupExport(), $fileName);
+    }
+
+    public function fullBackupPdf()
+    {
+        ini_set('max_execution_time', 300); // Set time limit longer because fetching all data might take time
+        
+        $products = \App\Models\Product::with('category')->get();
+        $users = \App\Models\User::all();
+        $orders = \App\Models\Order::with('user')->get();
+        $categories = \App\Models\Category::all();
+        $brands = \App\Models\Brand::all();
+        $flashSales = \App\Models\FlashSaleItem::with(['product', 'flashSale'])->get();
+        $vouchers = \App\Models\Voucher::all();
+
+        $pdf = Pdf::loadView('admin.reports.full_backup_pdf', compact('products', 'users', 'orders', 'categories', 'brands', 'flashSales', 'vouchers'));
+        $pdf->setPaper('A4', 'landscape'); // Landscape to fit more columns
+        
+        return $pdf->download('Full_System_Backup_'.date('Y_m_d_H_i_s').'.pdf');
     }
 }

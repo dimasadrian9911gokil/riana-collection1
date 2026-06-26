@@ -4,61 +4,66 @@
     <meta charset="utf-8">
     <title>Laporan Penjualan ({{ date('d M Y', strtotime($startDate)) }} - {{ date('d M Y', strtotime($endDate)) }})</title>
     <style>
-        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 11px; color: #333; line-height: 1.4; }
+        @page { margin: 40px; }
+        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 11px; color: #444; line-height: 1.5; background-color: #ffffff; }
         
         /* Header & Company Info */
-        table.header-table { width: 100%; margin-bottom: 25px; border-bottom: 2px solid #E91E63; padding-bottom: 10px; }
+        table.header-table { width: 100%; margin-bottom: 30px; border-bottom: 2px solid #FF6699; padding-bottom: 15px; }
         .header-table td { vertical-align: top; }
-        .company-name { font-size: 24px; font-weight: bold; color: #E91E63; margin: 0 0 5px 0; }
-        .company-address { font-size: 10px; color: #555; }
+        .company-name { font-size: 26px; font-weight: bold; color: #E91E63; margin: 0 0 5px 0; letter-spacing: 1px; }
+        .company-tagline { font-size: 11px; color: #FF6699; font-style: italic; margin-bottom: 10px; }
+        .company-address { font-size: 10px; color: #666; line-height: 1.4; }
         
         .report-title-container { text-align: right; }
-        .report-title { font-size: 20px; font-weight: bold; margin: 0 0 5px 0; letter-spacing: 1px; color: #222; text-transform: uppercase; }
-        .report-date { font-size: 11px; color: #666; }
+        .report-title { font-size: 22px; font-weight: bold; margin: 0 0 8px 0; letter-spacing: 2px; color: #333; text-transform: uppercase; }
+        .report-date { font-size: 11px; color: #777; background-color: #fff0f5; padding: 6px 12px; border-radius: 4px; display: inline-block; border: 1px solid #ffb6c1; }
 
         /* Summary Section */
         .summary-box { 
             width: 100%; 
-            margin-bottom: 20px; 
-            border-collapse: collapse;
+            margin-bottom: 25px; 
+            border-collapse: separate;
+            border-spacing: 15px 0;
         }
         .summary-box td {
-            background-color: #fff0f5;
-            padding: 12px;
-            border: 1px solid #ffccd5;
+            background-color: #fff9fb;
+            padding: 15px;
+            border-top: 3px solid #FF6699;
+            border-radius: 4px;
             text-align: center;
             width: 50%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
         }
-        .summary-label { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; display: block; }
-        .summary-value { font-size: 18px; font-weight: bold; color: #E91E63; margin: 0; }
+        .summary-label { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; display: block; font-weight: bold; }
+        .summary-value { font-size: 22px; font-weight: bold; color: #E91E63; margin: 0; }
 
         /* Main Data Table */
-        table.data-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        table.data-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
         .data-table th, .data-table td { 
-            border: 1px solid #e0e0e0; 
-            padding: 8px 6px; 
+            border-bottom: 1px solid #eeeeee; 
+            padding: 12px 8px; 
             text-align: left; 
             vertical-align: middle;
         }
         .data-table th { 
-            background-color: #E91E63; 
+            background-color: #FF6699; 
             color: white; 
             font-size: 10px; 
             text-transform: uppercase; 
-            letter-spacing: 0.5px;
-            border-color: #d81b60;
+            letter-spacing: 1px;
+            font-weight: bold;
         }
-        .data-table tbody tr:nth-child(even) { background-color: #fcfcfc; }
+        .data-table tbody tr:nth-child(even) { background-color: #fafafa; }
         
         .text-center { text-align: center; }
         .text-right { text-align: right; }
         .fw-bold { font-weight: bold; }
-        .text-danger { color: #d32f2f; }
-        .text-success { color: #388e3c; }
-        .text-muted { color: #777; font-size: 9px; }
+        .text-danger { color: #E91E63; }
+        .text-success { color: #4CAF50; }
+        .text-muted { color: #888; font-size: 9px; }
 
         /* Footer */
-        .footer { text-align: center; font-size: 9px; color: #999; margin-top: 30px; border-top: 1px solid #ddd; padding-top: 10px; }
+        .footer { text-align: center; font-size: 9px; color: #aaa; margin-top: 40px; border-top: 1px dashed #ddd; padding-top: 15px; }
         .page-break { page-break-after: always; }
     </style>
 </head>
