@@ -45,7 +45,7 @@
                     
                     @if($order->tracking_number)
                     <div id="tracking-info-container" class="mt-4 pt-4 border-top text-center animate__animated animate__fadeIn">
-                        <p class="text-muted mb-1 text-uppercase small fw-bold">Nomor Resi Pengiriman ({{ strtoupper($order->courier ?? 'Kurir') }})</p>
+                        <p class="text-muted mb-1 text-uppercase small fw-bold">Nomor Resi / Info Kurir ({{ strtoupper(str_replace('_', ' ', $order->courier ?? 'Kurir')) }})</p>
                         <h4 class="fw-bold mb-0 tracking-number-text" style="color: var(--primary-pink); letter-spacing: 2px;">
                             <i class="fas fa-shipping-fast me-2"></i><span id="tracking-number-value">{{ $order->tracking_number }}</span>
                         </h4>
@@ -129,6 +129,16 @@
                         <h5 class="fw-bold">Total</h5>
                         <h4 class="text-pink fw-bold">Rp{{ number_format($order->total, 0, ',', '.') }}</h4>
                     </div>
+
+                    @if(in_array($order->status, ['menunggu_pembayaran', 'menunggu_verifikasi']))
+                        <hr class="my-4">
+                        <form action="{{ route('orders.cancel', $order->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin membatalkan pesanan ini?');">
+                            @csrf
+                            <button type="submit" class="btn btn-outline-danger w-100 rounded-pill fw-bold py-2">
+                                <i class="fas fa-times-circle me-2"></i> Batalkan Pesanan
+                            </button>
+                        </form>
+                    @endif
                 </div>
             </div>
         </div>
@@ -253,7 +263,7 @@
                                 // Buat container baru jika sebelumnya kosong
                                 const containerHTML = `
                                 <div id="tracking-info-container" class="mt-4 pt-4 border-top text-center animate__animated animate__fadeIn">
-                                    <p class="text-muted mb-1 text-uppercase small fw-bold">Nomor Resi Pengiriman (<span id="tracking-courier-value">${data.courier}</span>)</p>
+                                    <p class="text-muted mb-1 text-uppercase small fw-bold">Nomor Resi / Info Kurir (<span id="tracking-courier-value">${data.courier.replace('_', ' ')}</span>)</p>
                                     <h4 class="fw-bold mb-0 tracking-number-text" style="color: var(--primary-pink); letter-spacing: 2px;">
                                         <i class="fas fa-shipping-fast me-2"></i><span id="tracking-number-value">${data.tracking_number}</span>
                                     </h4>

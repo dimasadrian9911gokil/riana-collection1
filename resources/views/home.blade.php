@@ -327,7 +327,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     @if(isset($activeFlashSale))
         // Set timer based on active flash sale end_time
-        let countDownDate = new Date("{{ $activeFlashSale->end_time->format('Y-m-d\TH:i:s') }}").getTime();
+        let countDownDate = new Date("{{ $activeFlashSale->end_time->toIso8601String() }}").getTime();
     @else
         // Default timer to end of today (23:59:59)
         let countDownDateObj = new Date();

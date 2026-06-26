@@ -115,6 +115,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/{id}/success', 'success')->name('success');
         Route::post('/{id}/confirm-payment', 'confirmPayment')->name('confirmPayment');
         Route::post('/{id}/change-payment', 'changePaymentMethod')->name('changePaymentMethod');
+        Route::post('/{id}/cancel', 'cancel')->name('cancel');
         Route::get('/{order}', 'show')->name('show'); // Pastikan ini di akhir
     });
 
@@ -168,6 +169,10 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/orders/{order}', [\App\Http\Controllers\Admin\OrderController::class, 'show'])->name('orders.show');
     Route::patch('/orders/{order}/status', [\App\Http\Controllers\Admin\OrderController::class, 'updateStatus'])->name('orders.status');
     Route::delete('/orders/{order}', [\App\Http\Controllers\Admin\OrderController::class, 'destroy'])->name('orders.destroy');
+    
+    // Manajemen Ongkir Desa
+    Route::resource('shipping_areas', \App\Http\Controllers\Admin\ShippingAreaController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::patch('/shipping_areas/{shippingArea}/toggle', [\App\Http\Controllers\Admin\ShippingAreaController::class, 'toggle'])->name('shipping_areas.toggle');
     
     Route::get('/vouchers', [\App\Http\Controllers\Admin\VoucherController::class, 'index'])->name('vouchers.index');
     Route::post('/vouchers', [\App\Http\Controllers\Admin\VoucherController::class, 'store'])->name('vouchers.store');

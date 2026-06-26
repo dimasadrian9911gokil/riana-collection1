@@ -20,9 +20,9 @@ class CartController extends Controller
             ->where('user_id', Auth::id())
             ->get();
             
-        // Hitung subtotal dengan memastikan relasi product tidak null
+        // Hitung subtotal dengan memastikan relasi product tidak null (gunakan final_price)
         $subtotal = $cartItems->sum(function($item) {
-            return $item->product ? ($item->product->price * $item->qty) : 0;
+            return $item->product ? ($item->product->final_price * $item->qty) : 0;
         });
         
         // Cari voucher terbaik (potongan terbesar) yang BELUM PERNAH DIPAKAI
@@ -87,10 +87,19 @@ class CartController extends Controller
         ]);
 
         $currentQty = $cart->qty ?? 0;
+        $requestedQty = $currentQty + $addQty;
 
-        // Validasi: Apakah total qty melebihi stok?
-        if (($currentQty + $addQty) <= $product->stock) {
-            $cart->qty = $currentQty + $addQty;
+        // Validasi Flash Sale Stock
+        $activeFlashSaleItem = $product->getActiveFlashSaleItem();
+        if ($activeFlashSaleItem) {
+            if ($requestedQty > $activeFlashSaleItem->stock_allocated) {
+                return redirect()->back()->with('error', 'Maaf, maksimal pembelian untuk barang Flash Sale ini adalah ' . $activeFlashSaleItem->stock_allocated . ' pcs.');
+            }
+        }
+
+        // Validasi: Apakah total qty melebihi stok utama?
+        if ($requestedQty <= $product->stock) {
+            $cart->qty = $requestedQty;
             $cart->save();
             
             if ($request->has('buy_now')) {
@@ -100,7 +109,7 @@ class CartController extends Controller
             return redirect()->back()->with('success', 'Produk berhasil ditambahkan ke keranjang!');
         }
 
-        return redirect()->back()->with('error', 'Maaf, stok tidak mencukupi untuk jumlah tersebut.');
+        return redirect()->back()->with('error', 'Maaf, stok utama tidak mencukupi untuk jumlah tersebut.');
     }
 
     /**
@@ -112,10 +121,13 @@ class CartController extends Controller
         $product = $cart->product;
 
         if ($request->action === 'increase') {
-            if ($cart->qty < $product->stock) {
+            $activeFlashSaleItem = $product->getActiveFlashSaleItem();
+            $maxQty = $activeFlashSaleItem ? min($product->stock, $activeFlashSaleItem->stock_allocated) : $product->stock;
+            
+            if ($cart->qty < $maxQty) {
                 $cart->increment('qty');
             } else {
-                return redirect()->back()->with('error', 'Stok maksimum tercapai.');
+                return redirect()->back()->with('error', 'Stok maksimum atau batas kuota flash sale tercapai.');
             }
         } elseif ($request->action === 'decrease') {
             if ($cart->qty > 1) {

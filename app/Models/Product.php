@@ -85,6 +85,17 @@ class Product extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function getActiveFlashSaleItem()
+    {
+        return \App\Models\FlashSaleItem::where('product_id', $this->id)
+            ->whereHas('flashSale', function ($q) {
+                $q->where('is_active', true)
+                  ->where('start_time', '<=', now())
+                  ->where('end_time', '>=', now());
+            })
+            ->first();
+    }
+
     /**
      * Mengakses harga final yang mempertimbangkan diskon flash sale.
      */
@@ -92,14 +103,7 @@ class Product extends Model
     {
         return Attribute::make(
             get: function () {
-                $activeFlashSaleItem = \App\Models\FlashSaleItem::where('product_id', $this->id)
-                    ->whereHas('flashSale', function ($q) {
-                        $q->where('is_active', true)
-                          ->where('start_time', '<=', now())
-                          ->where('end_time', '>=', now());
-                    })
-                    ->first();
-
+                $activeFlashSaleItem = $this->getActiveFlashSaleItem();
                 return $activeFlashSaleItem ? (float) $activeFlashSaleItem->discount_price : (float) $this->price;
             }
         );

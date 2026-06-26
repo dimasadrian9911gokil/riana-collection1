@@ -199,7 +199,7 @@
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         @if(isset($activeFlashSale))
-            let targetDate = new Date("{{ $activeFlashSale->end_time->format('Y-m-d\TH:i:s') }}");
+            let targetDate = new Date("{{ $activeFlashSale->end_time->toIso8601String() }}");
         @else
             let targetDate = new Date();
             targetDate.setHours(23, 59, 59, 0);

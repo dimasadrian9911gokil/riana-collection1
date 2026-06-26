@@ -90,10 +90,10 @@
                                 <div class="card-body p-4">
                                     <label class="form-label text-muted small fw-bold">Pilih Metode Pengiriman</label>
                                     <select name="courier" id="courierSelect" class="form-select border-pink-light shadow-none py-2 rounded-3 mb-2" onchange="updateTotal()" required>
-                                        <option value="JNE" data-cost="15000">JNE Regular (Rp15.000)</option>
-                                        <option value="J&T" data-cost="12000">J&T Express (Rp12.000)</option>
-                                        <option value="ShopeeXpress" data-cost="14000">Shopee Xpress (Rp14.000)</option>
-                                        <option value="Pickup" data-cost="0">Ambil di Toko (Gratis)</option>
+                                        @foreach($shippingAreas as $area)
+                                            <option value="{{ $area->name }}" data-cost="{{ $area->cost }}">{{ str_replace('_', ' ', $area->name) }} (Rp{{ number_format($area->cost, 0, ',', '.') }})</option>
+                                        @endforeach
+                                        <option value="Pickup" data-cost="0">Ambil di Toko / Pickup (Gratis)</option>
                                     </select>
                                     <div id="pickupInfo" class="alert alert-info mt-3 mb-0" style="display: none; background-color: #f0f8ff; border-left: 3px solid #0dcaf0; font-size: 0.85rem;">
                                         <strong>Lokasi Pengambilan:</strong><br>Riana Collection, Jl. Gatot Subroto Bengkalis (Dekat Momoyo Bengkalis).
@@ -108,7 +108,7 @@
                                 </div>
                                 <div class="card-body p-4">
                                     <div class="payment-options">
-                                        @foreach(['BCA' => 'Transfer BCA', 'BNI' => 'Transfer BNI', 'Mandiri' => 'Transfer Mandiri', 'DANA' => 'E-Wallet DANA', 'QRIS' => 'Scan QRIS'] as $value => $label)
+                                        @foreach(['BCA' => 'Transfer BCA (Manual)', 'BNI' => 'Transfer BNI (Manual)', 'Mandiri' => 'Transfer Mandiri (Manual)', 'DANA' => 'E-Wallet DANA (Manual)'] as $value => $label)
                                         <div class="form-check custom-radio mb-3 border rounded-3 p-3 d-flex align-items-center bg-white shadow-sm transition-all">
                                             <input class="form-check-input ms-0 me-3" type="radio" name="payment_method" value="{{ $value }}" id="{{ $value }}" onchange="updateTotal()" required>
                                             <label class="form-check-label flex-grow-1 fw-bold text-dark cursor-pointer" for="{{ $value }}">
@@ -120,7 +120,7 @@
                                             <input class="form-check-input ms-0 me-3" type="radio" name="payment_method" value="COD" id="COD" onchange="updateTotal()" required>
                                             <label class="form-check-label flex-grow-1 fw-bold text-dark cursor-pointer d-flex justify-content-between align-items-center" for="COD">
                                                 <span>Bayar di Tempat (COD)</span> 
-                                                <span class="badge bg-pink-soft text-pink px-2 py-1 rounded-pill border border-pink-light">Bebas Admin!</span>
+
                                             </label>
                                         </div>
                                     </div>
@@ -186,10 +186,7 @@
                                 <span>Ongkos Kirim</span>
                                 <span id="shippingCost" class="text-dark fw-medium">Rp15.000</span>
                             </div>
-                            <div class="d-flex justify-content-between mb-3 text-muted">
-                                <span>Biaya Admin</span>
-                                <span id="adminFeeDisplay" class="text-dark fw-medium">-</span>
-                            </div>
+
                             @if($bestVoucher)
                             <div class="d-flex justify-content-between mb-3">
                                 <span class="text-success"><i class="fas fa-tag me-1"></i> Diskon ({{ $bestVoucher->code }})</span>
@@ -300,32 +297,12 @@
         }
 
         let adminFee = 0;
-        let adminFeeText = '-';
 
-        if (selectedPayment) {
-            if (selectedPayment === 'COD') {
-                adminFee = 0;
-                adminFeeText = 'Gratis';
-            } else {
-                adminFee = 2000;
-                adminFeeText = 'Rp' + adminFee.toLocaleString('id-ID');
-            }
-        }
         
         const total = subtotal + shippingCost + adminFee - discount;
 
         document.getElementById('shippingCost').innerText = 'Rp' + shippingCost.toLocaleString('id-ID');
-        
-        // Update admin display
-        const adminDisplay = document.getElementById('adminFeeDisplay');
-        adminDisplay.innerText = adminFeeText;
-        if (adminFeeText === 'Gratis') {
-            adminDisplay.classList.add('text-success', 'fw-bold');
-            adminDisplay.classList.remove('text-dark');
-        } else {
-            adminDisplay.classList.remove('text-success', 'fw-bold');
-            adminDisplay.classList.add('text-dark');
-        }
+
 
         document.getElementById('totalAmount').innerText = 'Rp' + total.toLocaleString('id-ID');
     }

@@ -17,6 +17,11 @@ class Order extends Model
      */
     protected $fillable = [
         'user_id',
+        'recipient_name',
+        'recipient_phone',
+        'shipping_address',
+        'city',
+        'province',
         'invoice',
         'subtotal',
         'shipping_cost',
@@ -28,7 +33,8 @@ class Order extends Model
         'courier',
         'tracking_number',
         'snap_token',
-        'voucher_id'
+        'voucher_id',
+        'payment_proof'
     ];
 
     /**

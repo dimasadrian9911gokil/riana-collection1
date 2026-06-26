@@ -35,35 +35,29 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="fw-bold small text-muted">Alamat Lengkap</label>
+                        <label class="fw-bold small text-muted">Alamat Lengkap (Jalan, RT/RW, Desa/Kelurahan)</label>
                         <textarea name="address" class="form-control rounded-4" rows="3" required>{{ old('address', $address->address) }}</textarea>
                     </div>
 
                     <div class="row">
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-6 mb-3">
                             <label class="fw-bold small text-muted">Provinsi</label>
-                            <select name="province" id="provinceSelect" class="form-select rounded-pill" required>
-                                <option value="">Memuat...</option>
-                            </select>
+                            <input type="text" name="province" class="form-control rounded-pill" value="{{ old('province', $address->province) }}" required>
                         </div>
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-6 mb-3">
                             <label class="fw-bold small text-muted">Kota/Kabupaten</label>
-                            <select name="city" id="citySelect" class="form-select rounded-pill" required>
-                                <option value="">Pilih Provinsi Dahulu</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label class="fw-bold small text-muted">Kode Pos</label>
-                            <input type="text" name="postal_code" id="postalCodeInput" class="form-control rounded-pill" value="{{ old('postal_code', $address->postal_code) }}">
+                            <input type="text" name="city" class="form-control rounded-pill" value="{{ old('city', $address->city) }}" required>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="fw-bold small text-muted">Kecamatan</label>
-                            <select name="district" id="districtSelect" class="form-select rounded-pill" required>
-                                <option value="">Pilih Kota/Kab Dahulu</option>
-                            </select>
+                            <input type="text" name="district" class="form-control rounded-pill" value="{{ old('district', $address->district) }}" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="fw-bold small text-muted">Kode Pos</label>
+                            <input type="text" name="postal_code" id="postalCodeInput" class="form-control rounded-pill" value="{{ old('postal_code', $address->postal_code) }}">
                         </div>
                     </div>
 
@@ -94,73 +88,5 @@
     .form-control:focus, .form-select:focus { border-color: #ff6699; box-shadow: 0 0 0 0.25rem rgba(255, 102, 153, 0.25); }
 </style>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const apiBase = 'https://www.emsifa.com/api-wilayah-indonesia/api';
-        const provSelect = document.getElementById('provinceSelect');
-        const citySelect = document.getElementById('citySelect');
-        const distSelect = document.getElementById('districtSelect');
-        const postalInput = document.getElementById('postalCodeInput');
 
-        const oldProv = "{{ old('province', $address->province) }}";
-        const oldCity = "{{ old('city', $address->city) }}";
-        const oldDist = "{{ old('district', $address->district) }}";
-
-        // Fetch Provinces
-        fetch(`${apiBase}/provinces.json`)
-            .then(res => res.json())
-            .then(data => {
-                provSelect.innerHTML = '<option value="">Pilih Provinsi</option>';
-                data.forEach(prov => {
-                    const selected = prov.name === oldProv ? 'selected' : '';
-                    provSelect.innerHTML += `<option value="${prov.name}" data-id="${prov.id}" ${selected}>${prov.name}</option>`;
-                });
-                if(oldProv) provSelect.dispatchEvent(new Event('change'));
-            });
-
-        provSelect.addEventListener('change', function() {
-            const id = this.options[this.selectedIndex]?.getAttribute('data-id');
-            citySelect.innerHTML = '<option value="">Pilih Kota/Kabupaten</option>';
-            distSelect.innerHTML = '<option value="">Pilih Kota/Kab Dahulu</option>';
-            if(!id) return;
-
-            citySelect.innerHTML = '<option value="">Memuat...</option>';
-            fetch(`${apiBase}/regencies/${id}.json`)
-                .then(res => res.json())
-                .then(data => {
-                    citySelect.innerHTML = '<option value="">Pilih Kota/Kabupaten</option>';
-                    data.forEach(city => {
-                        const selected = city.name === oldCity ? 'selected' : '';
-                        citySelect.innerHTML += `<option value="${city.name}" data-id="${city.id}" ${selected}>${city.name}</option>`;
-                    });
-                    if(oldCity && provSelect.value === oldProv) citySelect.dispatchEvent(new Event('change'));
-                });
-        });
-
-        citySelect.addEventListener('change', function() {
-            const id = this.options[this.selectedIndex]?.getAttribute('data-id');
-            distSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
-            if(!id) return;
-
-            distSelect.innerHTML = '<option value="">Memuat...</option>';
-            fetch(`${apiBase}/districts/${id}.json`)
-                .then(res => res.json())
-                .then(data => {
-                    distSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
-                    data.forEach(dist => {
-                        const selected = dist.name === oldDist ? 'selected' : '';
-                        distSelect.innerHTML += `<option value="${dist.name}" data-id="${dist.id}" ${selected}>${dist.name}</option>`;
-                    });
-                });
-        });
-
-        distSelect.addEventListener('change', function() {
-            const id = this.options[this.selectedIndex]?.getAttribute('data-id');
-            if(id && !postalInput.value) {
-                // Auto-fill postal code simulation
-                postalInput.value = "2" + id.substring(0, 4);
-            }
-        });
-    });
-</script>
 @endsection

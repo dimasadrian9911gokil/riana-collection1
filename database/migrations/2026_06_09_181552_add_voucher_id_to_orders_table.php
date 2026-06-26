@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('orders', function (Blueprint $table) {
-            $table->foreignId('voucher_id')->nullable()->after('tracking_number')->constrained('vouchers')->nullOnDelete();
-        });
+        if (!Schema::hasColumn('orders', 'voucher_id')) {
+            Schema::table('orders', function (Blueprint $table) {
+                $table->foreignId('voucher_id')->nullable()->after('tracking_number')->constrained('vouchers')->nullOnDelete();
+            });
+        }
     }
 
     /**
@@ -21,9 +23,11 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('orders', function (Blueprint $table) {
-            $table->dropForeign(['voucher_id']);
-            $table->dropColumn('voucher_id');
-        });
+        if (Schema::hasColumn('orders', 'voucher_id')) {
+            Schema::table('orders', function (Blueprint $table) {
+                $table->dropForeign(['voucher_id']);
+                $table->dropColumn('voucher_id');
+            });
+        }
     }
 };

@@ -35,7 +35,14 @@ class AddressController extends Controller
     {
         $data = $this->validateAddress($request);
         $data['user_id'] = Auth::id();
-        $data['is_default'] = $request->has('is_default');
+        
+        // Jika ini adalah alamat pertama, paksa menjadi alamat utama
+        $addressCount = Address::where('user_id', Auth::id())->count();
+        if ($addressCount === 0) {
+            $data['is_default'] = true;
+        } else {
+            $data['is_default'] = $request->has('is_default');
+        }
 
         if ($data['is_default']) {
             $this->resetDefaultAddresses();

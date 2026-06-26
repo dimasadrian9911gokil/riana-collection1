@@ -169,12 +169,18 @@
                 <h6 class="fw-bold text-dark mb-0"><i class="fas fa-truck text-secondary me-2"></i>Informasi Pengiriman</h6>
             </div>
             <div class="card-body p-4">
-                <div class="mb-3">
-                    <small class="text-muted d-block mb-1">Kurir / Metode</small>
-                    <span class="fw-medium text-dark">{{ $order->courier }}</span>
+                <div class="mb-3 border-bottom pb-3">
+                    <small class="text-muted d-block mb-1">Penerima & Alamat Ketikan Pelanggan</small>
+                    <span class="fw-bold text-dark d-block">{{ $order->recipient_name ?? '-' }} ({{ $order->recipient_phone ?? '-' }})</span>
+                    <span class="text-dark d-block mt-1">{{ $order->shipping_address ?? 'Alamat tidak ditemukan' }}</span>
+                    <span class="text-dark d-block">{{ $order->city ?? '' }}, {{ $order->province ?? '' }}</span>
                 </div>
                 <div class="mb-3">
-                    <small class="text-muted d-block mb-1">Nomor Resi</small>
+                    <small class="text-muted d-block mb-1">Area Pengiriman / Kurir (Dipilih Saat Checkout)</small>
+                    <span class="fw-bold text-primary fs-6">{{ $order->courier }}</span>
+                </div>
+                <div class="mb-3">
+                    <small class="text-muted d-block mb-1">Nomor Resi / Info Kurir</small>
                     @if($order->tracking_number)
                         <div class="input-group input-group-sm mt-1">
                             <input type="text" class="form-control bg-light" value="{{ $order->tracking_number }}" readonly>
@@ -199,8 +205,8 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label text-muted small fw-bold">Update Resi (Opsional)</label>
-                        <input type="text" name="tracking_number" class="form-control form-control-sm" value="{{ $order->tracking_number }}" placeholder="Masukkan no resi...">
+                        <label class="form-label text-muted small fw-bold">Update Resi / Info Kurir (Opsional)</label>
+                        <input type="text" name="tracking_number" class="form-control form-control-sm" value="{{ $order->tracking_number }}" placeholder="Contoh: JNT123456 atau Diantar Budi">
                     </div>
                     <button type="submit" class="btn btn-primary btn-sm w-100 fw-bold">Simpan Perubahan</button>
                 </form>

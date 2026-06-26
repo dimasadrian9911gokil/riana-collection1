@@ -163,6 +163,11 @@
                         <i class="fas fa-shopping-cart me-2"></i> Pesanan Masuk
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white {{ request()->routeIs('admin.shipping_areas.*') ? 'active bg-white bg-opacity-25' : '' }}" href="{{ route('admin.shipping_areas.index') }}">
+                        <i class="fas fa-truck-fast me-2"></i> Ongkir Desa
+                    </a>
+                </li>
                 <li class="{{ request()->routeIs('admin.vouchers.*') ? 'active' : '' }}">
                     <a href="{{ route('admin.vouchers.index') }}"><i class="fas fa-ticket-alt"></i> Manajemen Voucher</a>
                 </li>

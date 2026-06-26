@@ -52,7 +52,7 @@ class CheckoutController extends Controller
 
         // 3. Hitung subtotal
         $subtotal = $cartItems->sum(function ($item) {
-            return $item->product->price * $item->qty;
+            return $item->product->final_price * $item->qty;
         });
 
         // 4. Proses Voucher
@@ -119,8 +119,9 @@ class CheckoutController extends Controller
                         ->get();
 
         $discount = $maxDiscountValue;
-        $adminFee = 2000; 
+        $adminFee = 0; 
+        $shippingAreas = \App\Models\ShippingArea::where('is_active', true)->orderBy('name')->get();
 
-        return view('checkout.index', compact('cartItems', 'subtotal', 'discount', 'adminFee', 'isBuyNow', 'bestVoucher', 'allVouchers'));
+        return view('checkout.index', compact('cartItems', 'subtotal', 'discount', 'adminFee', 'isBuyNow', 'bestVoucher', 'allVouchers', 'shippingAreas'));
     }
 }

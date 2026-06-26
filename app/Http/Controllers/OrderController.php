@@ -17,6 +17,11 @@ class OrderController extends Controller
         $request->validate(['courier' => 'required|string', 'payment_method' => 'required|string']);
         $user = Auth::user();
         
+        $alamatUtama = $user->addresses()->where('is_default', 1)->first();
+        if (!$alamatUtama) {
+            return back()->with('error', 'Silakan atur alamat pengiriman utama Anda terlebih dahulu di profil.');
+        }
+
         $isBuyNow = $request->has('buy_now_product_id');
 
         if ($isBuyNow) {
@@ -33,10 +38,14 @@ class OrderController extends Controller
         }
 
         try {
-            $order = DB::transaction(function () use ($cartItems, $request, $user, $isBuyNow) {
-                $subtotal = $cartItems->sum(fn($item) => $item->product->price * $item->qty);
-                $shipping = ['JNE' => 15000, 'J&T' => 12000, 'ShopeeXpress' => 14000, 'Pickup' => 0][$request->courier] ?? 15000;
-                $adminFee = ($request->payment_method === 'COD') ? 0 : 2000;
+            $order = DB::transaction(function () use ($cartItems, $request, $user, $isBuyNow, $alamatUtama) {
+                $subtotal = $cartItems->sum(fn($item) => $item->product->final_price * $item->qty);
+                $shipping = 0;
+                if ($request->courier !== 'Pickup') {
+                    $shippingArea = \App\Models\ShippingArea::where('name', $request->courier)->where('is_active', true)->first();
+                    $shipping = $shippingArea ? $shippingArea->cost : 20000;
+                }
+                $adminFee = 0;
                 
                 $discount = 0;
                 if ($request->has('voucher_id') && !empty($request->voucher_id)) {
@@ -55,6 +64,11 @@ class OrderController extends Controller
 
                 $order = Order::create([
                     'user_id' => $user->id,
+                    'recipient_name' => $alamatUtama->recipient_name,
+                    'recipient_phone' => $alamatUtama->phone,
+                    'shipping_address' => $alamatUtama->address . ($alamatUtama->district ? ', Kec. ' . $alamatUtama->district : '') . ($alamatUtama->postal_code ? ' ' . $alamatUtama->postal_code : ''),
+                    'city' => $alamatUtama->city,
+                    'province' => $alamatUtama->province,
                     'invoice' => 'INV-' . date('YmdHis') . '-' . $user->id,
                     'subtotal' => $subtotal,
                     'shipping_cost' => $shipping,
@@ -69,18 +83,26 @@ class OrderController extends Controller
 
                 foreach ($cartItems as $item) {
                     $product = Product::lockForUpdate()->findOrFail($item->product_id);
-                    if ($product->stock < $item->qty) throw new Exception("Stok {$product->name} tidak cukup.");
+                    $finalPrice = $product->final_price;
+                    $activeFlashSaleItem = $product->getActiveFlashSaleItem();
+                    
+                    $maxQty = $activeFlashSaleItem ? min($product->stock, $activeFlashSaleItem->stock_allocated) : $product->stock;
+                    if ($maxQty < $item->qty) throw new Exception("Stok atau kuota {$product->name} tidak cukup.");
 
                     OrderItem::create([
                         'order_id' => $order->id, 
                         'product_id' => $item->product_id, 
                         'product_name' => $product->name, 
-                        'price' => $product->price, 
+                        'price' => $finalPrice, 
                         'qty' => $item->qty, 
-                        'subtotal' => $product->price * $item->qty,
+                        'subtotal' => $finalPrice * $item->qty,
                         'variant' => $item->variant ?? 'Standard'
                     ]);
+                    
                     $product->decrement('stock', $item->qty);
+                    if ($activeFlashSaleItem) {
+                        $activeFlashSaleItem->decrement('stock_allocated', $item->qty);
+                    }
                 }
                 
                 // Hapus keranjang hanya jika transaksi normal (bukan Beli Sekarang)
@@ -109,37 +131,6 @@ class OrderController extends Controller
                 url('/admin/orders')
             ));
 
-            // MIDTRANS LOGIC
-            if ($order->payment_method !== 'COD') {
-                \Midtrans\Config::$serverKey = config('services.midtrans.serverKey');
-                \Midtrans\Config::$isProduction = config('services.midtrans.isProduction');
-                \Midtrans\Config::$isSanitized = true;
-                \Midtrans\Config::$is3ds = true;
-
-                $params = [
-                    'transaction_details' => [
-                        'order_id' => $order->invoice,
-                        'gross_amount' => (int) $order->total,
-                    ],
-                    'customer_details' => [
-                        'first_name' => $user->name,
-                        'email' => $user->email,
-                    ]
-                ];
-
-                try {
-                    $snapToken = \Midtrans\Snap::getSnapToken($params);
-                    $order->update(['snap_token' => $snapToken]);
-                } catch (Exception $e) {
-                    Log::error('Midtrans Error: ' . $e->getMessage());
-                    // Jika Midtrans belum dikonfigurasi, arahkan ke halaman sukses (karena sudah disiapkan Transfer Manual)
-                    return redirect()->route('orders.success', $order->id)->with('success', 'Pesanan berhasil dibuat! Silakan lanjutkan pembayaran.');
-                }
-                
-                return redirect()->route('orders.pay', $order->id);
-            }
-
-            // Jika COD, langsung ke halaman sukses
             return redirect()->route('orders.success', $order->id)->with('success', 'Pesanan berhasil dibuat!');
         } catch (Exception $e) {
             Log::error('Checkout Error: ' . $e->getMessage());
@@ -200,6 +191,32 @@ class OrderController extends Controller
         $order->update(['payment_method' => $request->payment_method]);
 
         return redirect()->route('orders.show', $order->id)->with('success', 'Metode pembayaran berhasil diubah.');
+    }
+
+    public function cancel($id): RedirectResponse
+    {
+        $order = Order::with('items')->where('user_id', Auth::id())->findOrFail($id);
+
+        if (!in_array($order->status, ['menunggu_pembayaran', 'menunggu_verifikasi'])) {
+            return back()->with('error', 'Pesanan tidak dapat dibatalkan pada status ini.');
+        }
+
+        DB::transaction(function () use ($order) {
+            $order->update(['status' => 'dibatalkan']);
+            
+            foreach ($order->items as $item) {
+                $product = Product::lockForUpdate()->find($item->product_id);
+                if ($product) {
+                    $product->increment('stock', $item->qty);
+                    $activeFlashSaleItem = $product->getActiveFlashSaleItem();
+                    if ($activeFlashSaleItem) {
+                        $activeFlashSaleItem->increment('stock_allocated', $item->qty);
+                    }
+                }
+            }
+        });
+
+        return redirect()->route('orders.show', $order->id)->with('success', 'Pesanan berhasil dibatalkan.');
     }
 
     // Endpoint untuk fitur Realtime Polling

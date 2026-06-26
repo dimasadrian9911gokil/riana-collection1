@@ -67,26 +67,62 @@
                         <h3 class="fw-bold text-danger">Rp{{ number_format($order->total, 0, ',', '.') }}</h3>
                     </div>
 
-                    <div class="alert alert-light border mt-4">
-                        📦 Pesanan sedang diproses. Silakan lakukan pembayaran. 
-                        Status pesanan dapat dipantau melalui menu <a href="{{ route('orders.index') }}" class="text-decoration-none fw-bold" style="color: #E91E63;">Riwayat Pesanan</a>.
-                    </div>
-
-                    <div class="row mt-4">
-                        <div class="col-md-6 mb-2">
-                            <a href="{{ route('orders.show', $order->id) }}" class="btn btn-danger btn-lg w-100 rounded-pill">📋 Lihat Detail Pesanan</a>
+                    @if($order->payment_method !== 'COD')
+                    <div class="alert alert-info border mt-4 text-start" style="background-color: #f8f9fa;">
+                        <h5 class="fw-bold text-dark"><i class="fas fa-university text-primary me-2"></i>Instruksi Pembayaran Manual</h5>
+                        <p class="mb-2 text-dark">Silakan transfer dana sebesar <strong class="text-danger fs-5">Rp{{ number_format($order->total, 0, ',', '.') }}</strong> ke rekening berikut:</p>
+                        <div class="bg-white p-3 rounded-3 border mb-3">
+                            @if($order->payment_method === 'BCA')
+                                <div class="mb-0">💳 <strong>BCA:</strong> 1234567890 <br><small class="text-muted">a.n. Riana Collection</small></div>
+                            @elseif($order->payment_method === 'BNI')
+                                <div class="mb-0">💳 <strong>BNI:</strong> 0987654321 <br><small class="text-muted">a.n. Riana Collection</small></div>
+                            @elseif($order->payment_method === 'Mandiri')
+                                <div class="mb-0">💳 <strong>Mandiri:</strong> 1122334455 <br><small class="text-muted">a.n. Riana Collection</small></div>
+                            @elseif($order->payment_method === 'DANA')
+                                <div class="mb-0">📱 <strong>DANA:</strong> 081234567890 <br><small class="text-muted">a.n. Riana Collection</small></div>
+                            @else
+                                <div class="mb-0">Mohon hubungi admin untuk informasi rekening.</div>
+                            @endif
                         </div>
-                        <div class="col-md-6 mb-2">
+                        <p class="mb-0 text-dark d-print-none">Setelah transfer, <strong>WAJIB</strong> mengunggah (upload) bukti struk pada halaman <a href="{{ route('orders.show', $order->id) }}" class="fw-bold text-danger text-decoration-none">Detail Pesanan</a> agar pesanan dapat diproses.</p>
+                    </div>
+                    @else
+                    <div class="alert alert-success border mt-4">
+                        <i class="fas fa-box-open me-2"></i> 📦 Pesanan Anda sedang disiapkan! 
+                        <br>Anda dapat membayar langsung secara tunai saat barang diterima (COD) atau saat Anda mengambil barang di toko.
+                        Pantau pesanan di <a href="{{ route('orders.index') }}" class="text-decoration-none fw-bold" style="color: #E91E63;">Riwayat Pesanan</a>.
+                    </div>
+                    @endif
+
+                    <div class="row mt-4 d-print-none">
+                        <div class="col-md-4 mb-2">
+                            <button onclick="window.print()" class="btn btn-dark btn-lg w-100 rounded-pill"><i class="fas fa-file-pdf"></i> Download PDF</button>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <a href="{{ route('orders.show', $order->id) }}" class="btn btn-danger btn-lg w-100 rounded-pill">📋 Detail Pesanan</a>
+                        </div>
+                        <div class="col-md-4 mb-2">
                             <a href="{{ route('home') }}" class="btn btn-outline-danger btn-lg w-100 rounded-pill">🛍️ Lanjut Belanja</a>
                         </div>
                     </div>
                 </div>
 
-                <div class="text-center text-white p-3" style="background:#ff5c8d;">
+                <div class="text-center text-white p-3 d-print-none" style="background:#ff5c8d;">
                     💖 Terima kasih telah mempercayai Riana Collection
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+@media print {
+    body { background: #fff !important; }
+    nav, footer, .d-print-none { display: none !important; }
+    .container { max-width: 100% !important; margin: 0 !important; padding: 0 !important; }
+    .card { box-shadow: none !important; border: none !important; }
+    /* Pastikan warna background card-header tetap tercetak */
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+}
+</style>
 @endsection
