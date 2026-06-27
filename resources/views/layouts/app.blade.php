@@ -96,8 +96,8 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             font-weight: 900;
-            font-size: 1.4rem;
-            letter-spacing: 1.5px;
+            font-size: clamp(1rem, 4vw, 1.4rem);
+            letter-spacing: 1px;
         }
         .brand-icon-wrapper {
             background: linear-gradient(135deg, #d81b60, #ff80ab);
@@ -111,6 +111,9 @@
             font-size: 0.9rem;
             box-shadow: 0 4px 10px rgba(216,27,96,0.3);
         }
+        
+        .map-container { min-height: 400px; }
+        @media (max-width: 768px) { .map-container { min-height: 250px; } }
     </style>
 </head>
 <body>
@@ -270,7 +273,7 @@
             </div>
             
             <!-- Google Maps Embed -->
-            <div class="col-md-7 p-0" style="min-height: 400px;">
+            <div class="col-md-7 p-0 map-container">
                 <iframe width="100%" height="100%" style="border:0;" loading="lazy" allowfullscreen src="https://maps.google.com/maps?q=Riana%20collection,%20Jl.%20Antara%20Damon,%20Bengkalis&t=&z=16&ie=UTF8&iwloc=&output=embed"></iframe>
             </div>
         </div>

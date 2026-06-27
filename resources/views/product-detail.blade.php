@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col-md-5">
             <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-3 bg-light" style="border-bottom: 5px solid #dc3545;">
-                <img id="mainImage" src="{{ asset('storage/' . $product->image) }}" class="card-img-top" style="height: 450px; object-fit: cover;" alt="{{ $product->name }}">
+                <img id="mainImage" src="{{ asset('storage/' . $product->image) }}" class="card-img-top main-product-img" alt="{{ $product->name }}">
             </div>
             
             <div class="d-flex gap-2 overflow-auto pb-2">
@@ -65,9 +65,9 @@
                 <span class="text-muted small">Tersisa <span id="stock-count">{{ $product->stock }}</span> stok</span>
             </div>
 
-            <div class="d-flex gap-3">
-                <button class="btn btn-outline-danger btn-lg px-4"><i class="fas fa-cart-plus me-2"></i>Masukkan Keranjang</button>
-                <button class="btn btn-danger btn-lg px-5 shadow-sm">Beli Sekarang</button>
+            <div class="d-flex flex-column flex-sm-row gap-2 gap-sm-3 mt-4">
+                <button class="btn btn-outline-danger btn-lg px-4 flex-grow-1"><i class="fas fa-cart-plus me-2"></i>Masukkan Keranjang</button>
+                <button class="btn btn-danger btn-lg px-5 shadow-sm flex-grow-1">Beli Sekarang</button>
             </div>
         </div>
     </div>
@@ -107,5 +107,15 @@
     .thumbnail-img { transition: 0.3s; opacity: 0.7; border: 2px solid transparent; cursor: pointer; }
     .thumbnail-img:hover, .thumbnail-img.active { opacity: 1; border: 2px solid #dc3545 !important; }
     .btn-check:checked + .btn-outline-secondary { background-color: #dc3545; color: white; border-color: #dc3545; }
+    
+    .main-product-img {
+        height: 450px;
+        object-fit: cover;
+    }
+    @media (max-width: 768px) {
+        .main-product-img {
+            height: 300px;
+        }
+    }
 </style>
 @endsection

@@ -51,13 +51,13 @@
 
             <div class="row">
                 @forelse($products as $product)
-                <div class="col-md-4 col-sm-6 mb-4">
+                <div class="col-6 col-md-4 mb-4">
                     <div class="card border-0 shadow-sm h-100 transition-card">
                         <div class="position-relative overflow-hidden bg-light">
                             <img src="{{ asset('storage/' . $product->image) }}" 
                                  class="card-img-top" 
                                  alt="{{ $product->name }}" 
-                                 style="height: 250px; object-fit: cover;"
+                                 style="aspect-ratio: 1/1; width: 100%; object-fit: cover;"
                                  onerror="this.onerror=null; this.src='{{ asset('images/default-product.jpg') }}';">
                             
                             @if($product->is_flash_sale)
@@ -70,22 +70,22 @@
                             <h6 class="fw-bold mt-2 text-truncate" title="{{ $product->name }}">{{ $product->name }}</h6>
                             
                             <div class="mt-auto pt-2">
-                                <span class="text-danger fw-bold fs-5">Rp{{ number_format($product->final_price ?? $product->price, 0, ',', '.') }}</span>
+                                <span class="text-danger fw-bold" style="font-size: clamp(0.95rem, 4vw, 1.25rem);">Rp{{ number_format($product->final_price ?? $product->price, 0, ',', '.') }}</span>
                                 @if($product->is_flash_sale)
-                                <br><small class="text-decoration-line-through text-muted">Rp{{ number_format($product->price, 0, ',', '.') }}</small>
+                                <br><small class="text-decoration-line-through text-muted" style="font-size: 0.75rem;">Rp{{ number_format($product->price, 0, ',', '.') }}</small>
                                 @endif
                             </div>
 
                             <div class="d-grid gap-2 mt-3">
-                                <a href="{{ route('products.show', $product->id) }}" class="btn btn-outline-secondary rounded-pill">
-                                    <i class="fas fa-eye me-1"></i> Lihat Detail
+                                <a href="{{ route('products.show', $product->id) }}" class="btn btn-outline-secondary btn-sm rounded-pill d-flex align-items-center justify-content-center">
+                                    <i class="fas fa-eye me-1"></i> <span class="d-none d-sm-inline">Detail</span>
                                 </a>
                                 <!-- FORM TAMBAH KERANJANG (POST METHOD) -->
                                 <form action="{{ route('cart.store') }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                    <button type="submit" class="btn btn-danger w-100 rounded-pill">
-                                        <i class="fas fa-shopping-cart me-1"></i> Tambah Keranjang
+                                    <button type="submit" class="btn btn-danger btn-sm w-100 rounded-pill d-flex align-items-center justify-content-center">
+                                        <i class="fas fa-shopping-cart me-1"></i> <span class="d-none d-sm-inline">Tambah</span>
                                     </button>
                                 </form>
                             </div>

@@ -16,7 +16,7 @@
             
             <!-- Slide 1 -->
             <div class="carousel-item active" style="background: linear-gradient(135deg, #FF9A9E 0%, #FECFEF 100%);">
-                <div class="row align-items-center p-5" style="min-height: 400px;">
+                <div class="row align-items-center p-4 p-md-5" style="min-height: 400px;">
                     <div class="col-md-6 text-center text-md-start ps-md-5 position-relative z-index-1">
                         <span class="badge bg-white text-danger mb-3 px-3 py-2 rounded-pill shadow-sm"><i class="fas fa-star text-warning"></i> Koleksi Terbaru</span>
                         <h1 class="display-4 fw-bold text-white mb-3" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.1);">Beauty Starts Here ✨</h1>
@@ -32,7 +32,7 @@
 
             <!-- Slide 2 -->
             <div class="carousel-item" style="background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);">
-                <div class="row align-items-center p-5" style="min-height: 400px;">
+                <div class="row align-items-center p-4 p-md-5" style="min-height: 400px;">
                     <div class="col-md-6 text-center text-md-start ps-md-5 position-relative z-index-1">
                         <span class="badge bg-warning text-dark mb-3 px-3 py-2 rounded-pill shadow-sm"><i class="fas fa-bolt text-danger"></i> Diskon Kilat</span>
                         <h1 class="display-4 fw-bold text-white mb-3" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.1);">Flash Sale Up To 70%</h1>
@@ -47,7 +47,7 @@
 
             <!-- Slide 3 -->
             <div class="carousel-item" style="background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);">
-                <div class="row align-items-center p-5" style="min-height: 400px;">
+                <div class="row align-items-center p-4 p-md-5" style="min-height: 400px;">
                     <div class="col-md-6 text-center text-md-start ps-md-5 position-relative z-index-1">
                         <span class="badge bg-success text-white mb-3 px-3 py-2 rounded-pill shadow-sm"><i class="fas fa-leaf text-white"></i> Rekomendasi Ahli</span>
                         <h1 class="display-4 fw-bold text-white mb-3" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.1);">Kenali Tipe Kulitmu</h1>
@@ -198,7 +198,7 @@
         <div class="row">
             @foreach($flashSaleItems as $item)
             @php $product = $item->product; @endphp
-            <div class="col-md-3 mb-4">
+            <div class="col-6 col-md-4 col-lg-3 mb-4">
                 <div class="card h-100 border rounded-3 overflow-hidden" style="transition: 0.3s;">
                     <!-- Badge Diskon -->
                     <span class="position-absolute badge bg-danger" style="top: 10px; left: 10px; z-index: 2; padding: 6px 10px; border-radius: 4px;">
@@ -206,8 +206,8 @@
                     </span>
                     
                     <!-- Area Gambar (Abu-abu) -->
-                    <div style="height: 220px; background-color: #e0e0e0;" class="d-flex align-items-center justify-content-center p-4 position-relative">
-                        <img src="{{ asset('storage/' . $product->image) }}" class="img-fluid" style="max-height: 100%; object-fit: contain; mix-blend-mode: multiply;">
+                    <div style="aspect-ratio: 1/1; background-color: #e0e0e0;" class="d-flex align-items-center justify-content-center p-2 p-md-4 position-relative">
+                        <img src="{{ asset('storage/' . $product->image) }}" class="img-fluid" style="max-height: 100%; max-width: 100%; object-fit: contain; mix-blend-mode: multiply;">
                     </div>
                     
                     <div class="card-body d-flex flex-column p-3">
@@ -222,8 +222,8 @@
                         
                         <!-- Harga -->
                         <div class="mb-2">
-                            <h5 class="text-danger fw-bold mb-0">Rp{{ number_format($item->discount_price, 0, ',', '.') }}</h5>
-                            <small class="text-muted text-decoration-line-through">Rp{{ number_format($product->price, 0, ',', '.') }}</small>
+                            <h5 class="text-danger fw-bold mb-0" style="font-size: clamp(1rem, 4vw, 1.25rem);">Rp{{ number_format($item->discount_price, 0, ',', '.') }}</h5>
+                            <small class="text-muted text-decoration-line-through" style="font-size: 0.75rem;">Rp{{ number_format($product->price, 0, ',', '.') }}</small>
                         </div>
                         
                         <!-- Progress Bar Stok -->
@@ -235,15 +235,15 @@
                             
                             <!-- Tombol Aksi -->
                             <div class="d-flex flex-column gap-2">
-                                <a href="{{ route('products.show', $product->id) }}" class="btn btn-sm w-100 fw-bold d-flex align-items-center justify-content-center gap-2 rounded-pill" style="border: 2px solid #FF6699; color: #FF6699; background: transparent; transition: 0.3s;" onmouseover="this.style.backgroundColor='#FF6699'; this.style.color='#fff';" onmouseout="this.style.backgroundColor='transparent'; this.style.color='#FF6699';">
-                                    <i class="fas fa-eye"></i> Lihat Detail
+                                <a href="{{ route('products.show', $product->id) }}" class="btn btn-sm w-100 fw-bold d-flex align-items-center justify-content-center gap-1 gap-md-2 rounded-pill" style="border: 2px solid #FF6699; color: #FF6699; background: transparent; transition: 0.3s; font-size: 0.8rem;" onmouseover="this.style.backgroundColor='#FF6699'; this.style.color='#fff';" onmouseout="this.style.backgroundColor='transparent'; this.style.color='#FF6699';">
+                                    <i class="fas fa-eye"></i> <span class="d-none d-sm-inline">Lihat Detail</span>
                                 </a>
                                 <form action="{{ route('cart.store') }}" method="POST" class="w-100 m-0">
                                     @csrf
                                     <input type="hidden" name="product_id" value="{{ $product->id }}">
                                     <input type="hidden" name="buy_now" value="1">
-                                    <button type="submit" class="btn btn-sm w-100 fw-bold shadow-sm d-flex align-items-center justify-content-center gap-2 rounded-pill" style="background-color: #FF6699; color: white; border: none;">
-                                        <i class="fas fa-shopping-bag"></i> Beli Sekarang
+                                    <button type="submit" class="btn btn-sm w-100 fw-bold shadow-sm d-flex align-items-center justify-content-center gap-1 gap-md-2 rounded-pill" style="background-color: #FF6699; color: white; border: none; font-size: 0.8rem;">
+                                        <i class="fas fa-shopping-bag"></i> Beli
                                     </button>
                                 </form>
                             </div>
@@ -264,26 +264,26 @@
     </div>
     <div class="row">
         @foreach($latestProducts as $product)
-        <div class="col-md-3 mb-4">
-            <div class="card h-100 product-card-aesthetic shadow-sm p-3 rounded-4">
-                <div style="height: 200px;" class="d-flex align-items-center justify-content-center bg-white rounded mb-3">
-                    <img src="{{ asset('storage/' . $product->image) }}" class="img-fluid p-2" style="max-height: 100%; object-fit: contain;">
+        <div class="col-6 col-md-4 col-lg-3 mb-4">
+            <div class="card h-100 product-card-aesthetic shadow-sm p-2 p-md-3 rounded-4">
+                <div style="aspect-ratio: 1/1;" class="d-flex align-items-center justify-content-center bg-white rounded mb-3">
+                    <img src="{{ asset('storage/' . $product->image) }}" class="img-fluid p-1 p-md-2" style="max-height: 100%; max-width: 100%; object-fit: contain;">
                 </div>
-                <div class="card-body text-center p-0">
-                    <h6 class="fw-bold text-truncate">{{ $product->name }}</h6>
-                    <div class="text-warning small mb-2"><i class="fas fa-star"></i> 4.8</div>
-                    <div class="text-danger fw-bold mb-3">Rp{{ number_format($product->price, 0, ',', '.') }}</div>
+                <div class="card-body text-center p-0 d-flex flex-column">
+                    <h6 class="fw-bold text-truncate" style="font-size: clamp(0.85rem, 3vw, 1rem);">{{ $product->name }}</h6>
+                    <div class="text-warning small mb-2" style="font-size: 0.75rem;"><i class="fas fa-star"></i> 4.8</div>
+                    <div class="text-danger fw-bold mb-3 mt-auto" style="font-size: clamp(0.95rem, 4vw, 1.25rem);">Rp{{ number_format($product->price, 0, ',', '.') }}</div>
                     
                     <div class="d-grid gap-2">
-                        <a href="{{ route('products.show', $product->id) }}" class="btn btn-outline-secondary rounded-pill">
-                            <i class="fas fa-eye me-1"></i> Lihat Detail
+                        <a href="{{ route('products.show', $product->id) }}" class="btn btn-outline-secondary btn-sm rounded-pill d-flex align-items-center justify-content-center">
+                            <i class="fas fa-eye me-1"></i> <span class="d-none d-sm-inline">Detail</span>
                         </a>
                         <!-- TOMBOL TAMBAH KERANJANG BARU -->
                         <form action="{{ route('cart.store') }}" method="POST" class="w-100">
                             @csrf
                             <input type="hidden" name="product_id" value="{{ $product->id }}">
-                            <button type="submit" class="btn btn-outline-danger w-100 rounded-pill">
-                                <i class="fas fa-shopping-cart me-1"></i> Tambah Keranjang
+                            <button type="submit" class="btn btn-outline-danger btn-sm w-100 rounded-pill d-flex align-items-center justify-content-center">
+                                <i class="fas fa-shopping-cart me-1"></i> <span class="d-none d-sm-inline">Tambah</span>
                             </button>
                         </form>
                     </div>
