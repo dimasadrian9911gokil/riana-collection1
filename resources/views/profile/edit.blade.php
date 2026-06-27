@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends(Auth::user()->hasRole('admin') ? 'layouts.admin' : 'layouts.app')
 
 @section('title','Pengaturan Akun')
 
@@ -86,9 +86,11 @@
                 <button class="nav-link text-start active" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="true">
                     <i class="fas fa-user-circle me-2"></i> Profil Saya
                 </button>
+                @if(!Auth::user()->hasRole('admin'))
                 <button class="nav-link text-start" id="v-pills-address-tab" data-bs-toggle="pill" data-bs-target="#v-pills-address" type="button" role="tab" aria-controls="v-pills-address" aria-selected="false">
                     <i class="fas fa-map-marker-alt me-2"></i> Daftar Alamat
                 </button>
+                @endif
                 <button class="nav-link text-start" id="v-pills-security-tab" data-bs-toggle="pill" data-bs-target="#v-pills-security" type="button" role="tab" aria-controls="v-pills-security" aria-selected="false">
                     <i class="fas fa-lock me-2"></i> Keamanan
                 </button>
@@ -153,6 +155,7 @@
                     </div>
                 </div>
 
+                @if(!Auth::user()->hasRole('admin'))
                 <!-- TAB ALAMAT (Integrasi Langsung) -->
                 <div class="tab-pane fade" id="v-pills-address" role="tabpanel" aria-labelledby="v-pills-address-tab" tabindex="0">
                     <div class="card border-0 shadow-sm rounded-4">
@@ -204,6 +207,7 @@
                         </div>
                     </div>
                 </div>
+                @endif
 
                 <!-- TAB KEAMANAN -->
                 <div class="tab-pane fade" id="v-pills-security" role="tabpanel" aria-labelledby="v-pills-security-tab" tabindex="0">

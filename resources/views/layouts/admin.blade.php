@@ -202,7 +202,7 @@
                             <small class="text-muted">{{ Auth::user()->email }}</small>
                         </li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item py-2" href="{{ route('home') }}"><i class="fas fa-store me-2 text-primary"></i> Kunjungi Toko</a></li>
+                        <li><a class="dropdown-item py-2" href="{{ route('profile.edit') }}"><i class="fas fa-user-cog me-2 text-secondary"></i> Pengaturan Akun</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
                             <form action="{{ route('logout') }}" method="POST">
