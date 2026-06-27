@@ -24,6 +24,16 @@ use App\Http\Controllers\Auth\{
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/flash-sale', [HomeController::class, 'flashsale'])->name('flashsale');
 
+// Temporary Route untuk memperbaiki Database
+Route::get('/fix-database', function() {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+        return "Tabel Database berhasil diperbaiki! Silakan tutup halaman ini dan kembali ke website Anda.";
+    } catch (\Exception $e) {
+        return "Error saat memperbaiki database: " . $e->getMessage();
+    }
+});
+
 // AI Analyzer Routes
 Route::get('/ai-analyzer', [AiAnalyzerController::class, 'index'])->name('ai.analyzer');
 Route::post('/ai-analyzer/analyze', [AiAnalyzerController::class, 'analyze'])->name('ai.analyze');
