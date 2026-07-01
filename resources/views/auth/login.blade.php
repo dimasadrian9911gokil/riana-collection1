@@ -50,6 +50,7 @@
     <div class="row">
         <div class="col-lg-7 left-panel">
             <div class="d-flex flex-column justify-content-center align-items-center h-75">
+                <img src="{{ asset('images/logo.png') }}" alt="Logo Riana Collection" class="img-fluid mb-3" style="width: 120px; height: 120px; object-fit: cover; border-radius: 50%; box-shadow: 0 4px 15px rgba(0,0,0,0.15); background: white; padding: 5px;">
                 <div class="logo-title">RIANA</div>
                 <div class="logo-title">COLLECTION</div>
             </div>
