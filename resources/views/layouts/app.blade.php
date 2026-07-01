@@ -68,7 +68,7 @@
         }
         .nav-link i { margin-right: 6px !important; }
         .nav-link:hover { color: var(--primary-pink) !important; transform: translateY(-2px); }
-        .search-box { width: 220px; border-radius: 20px; border: 1px solid #ddd; }
+        .search-box { width: 100%; max-width: 220px; border-radius: 20px; border: 1px solid #ddd; }
         .profile-img { width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--primary-pink); }
         .profile-header { background: linear-gradient(135deg, #fff5f8, #ffe6ee); }
         
@@ -156,14 +156,14 @@
                     @endauth
                 </ul>
 
-                <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item mx-1 mx-lg-2">
-                        <form action="{{ route('products') }}" method="GET" class="d-flex">
-                            <input type="text" name="search" class="form-control search-box" placeholder="Cari produk..." style="width: 180px;">
+                <ul class="navbar-nav ms-auto align-items-xl-center align-items-start mt-3 mt-xl-0 border-xl-0 border-top pt-xl-0 pt-3">
+                    <li class="nav-item mb-2 mb-xl-0 mx-xl-2">
+                        <form action="{{ route('products') }}" method="GET" class="d-flex w-100">
+                            <input type="text" name="search" class="form-control search-box" placeholder="Cari produk...">
                         </form>
                     </li>
                     
-                    <li class="nav-item mx-2">
+                    <li class="nav-item mb-2 mb-xl-0 mx-xl-2">
                         <a class="nav-link position-relative" href="{{ route('cart.index') }}">
                             <i class="fas fa-shopping-cart fs-5" style="color: #d81b60;"></i>
                             @if(($cartCount ?? 0) > 0)
@@ -176,7 +176,7 @@
 
                     @auth
                     <!-- Notification Bell with Polling -->
-                    <li class="nav-item dropdown mx-2">
+                    <li class="nav-item mb-2 mb-xl-0 mx-xl-2 dropdown">
                         <a class="nav-link position-relative dropdown-toggle" href="#" id="navbarNotification" role="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="markNotificationsAsRead()">
                             <i class="fas fa-bell fs-5"></i>
                             <span id="notificationBadgeCounter" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem; display: none;">
@@ -198,7 +198,7 @@
 
                     @auth
                     {{-- DROPDOWN DIPERBAIKI --}}
-                    <li class="nav-item dropdown ms-2">
+                    <li class="nav-item mb-2 mb-xl-0 mx-xl-2 dropdown">
                         <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <img src="{{ Auth::user()->avatar ? asset('storage/'.Auth::user()->avatar) : 'https://ui-avatars.com/api/?name='.urlencode(Auth::user()->name).'&background=E91E63&color=fff' }}" class="profile-img me-2 shadow-sm border border-light rounded-circle" style="width:35px; height:35px; object-fit:cover;">
                             <span class="fw-bold" style="color: var(--primary-pink);">{{ Auth::user()->name }}</span>
