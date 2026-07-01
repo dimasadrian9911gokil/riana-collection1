@@ -41,10 +41,13 @@
         .btn-login:hover{ transform: translateY(-3px); box-shadow: 0 12px 25px rgba(216,79,123,.35); color:white; }
 
         @media(max-width:992px){
-            .left-panel{ display: none !important; }
-            .right-panel{ background: #ffffff; padding: 20px; }
-            .login-card{ padding: 30px 20px; box-shadow: none; border: none; background: #ffffff; }
-            .btn-back-mobile { display: inline-block; margin-bottom: 20px; color: #d84f7b; text-decoration: none; font-weight: bold; }
+            .left-panel { min-height: 280px !important; border-radius: 0 0 30px 30px; padding-bottom: 20px; display: block !important; }
+            .logo-title { font-size: 50px; margin-top: 10px; }
+            .tagline { font-size: 20px; margin-top: 10px !important; }
+            .footer-links, .fs-3 { display: none !important; }
+            .h-75 { height: auto !important; margin-top: 20px; }
+            .right-panel { background: #f4f4f4; padding: 15px; margin-top: -40px; z-index: 10; align-items: flex-start; }
+            .login-card { padding: 30px 20px; border-radius: 20px; background: #ffffff; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: none; }
         }
     </style>
 </head>
@@ -52,7 +55,7 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-lg-7 left-panel d-none d-lg-block">
+        <div class="col-lg-7 left-panel">
             <div class="p-4 d-flex justify-content-between">
                 <a href="{{ url('/') }}" class="btn-back">← Kembali</a>
                 <div class="language">
@@ -77,13 +80,6 @@
 
         <div class="col-lg-5 right-panel">
             <div class="login-card">
-                <!-- Header Mobile -->
-                <div class="d-lg-none text-center mb-4">
-                    <a href="{{ url('/') }}" class="btn-back-mobile float-start">← Kembali</a>
-                    <div class="clearfix"></div>
-                    <h2 class="fw-bold" style="color: #d84f7b; letter-spacing: 2px;">RIANA</h2>
-                    <p class="text-muted mb-0" style="letter-spacing: 1px; font-size: 0.9rem;">COLLECTION</p>
-                </div>
 
                 <div class="top-line d-none d-lg-block"></div>
                 <h2 class="text-center fw-bold mb-1">Login</h2>
