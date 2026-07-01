@@ -10,14 +10,14 @@
     <div class="position-absolute rounded-circle bg-white opacity-25" style="width: 250px; height: 250px; top: -50px; left: -50px;"></div>
     <div class="position-absolute rounded-circle bg-white opacity-25" style="width: 150px; height: 150px; bottom: 20px; right: 10%;"></div>
     
-    <div class="container position-relative z-index-1 text-center py-5">
+    <div class="container position-relative z-index-1 text-center py-4 py-md-5">
         <span class="badge bg-white text-primary px-4 py-2 fs-6 rounded-pill mb-3 shadow-sm" style="letter-spacing: 1px;">
             <i class="fas fa-list-ul me-2"></i> KATEGORI LENGKAP
         </span>
-        <h1 class="display-3 fw-bold text-white mb-3" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.1);">
+        <h1 class="display-5 display-md-3 fw-bold text-white mb-3" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.1);">
             Kategori Beauty Store ✨
         </h1>
-        <p class="fs-4 text-white opacity-75 fw-light mx-auto" style="max-width: 600px;">
+        <p class="fs-5 fs-md-4 text-white opacity-75 fw-light mx-auto" style="max-width: 600px;">
             Temukan berbagai macam pilihan skincare, makeup, parfum, dan bodycare untuk sempurnakan penampilanmu.
         </p>
     </div>
@@ -65,7 +65,7 @@
         @endphp
         <div class="col-lg-3 col-md-4 col-6">
             <a href="{{ route('products', ['category' => $category->slug]) }}" class="text-decoration-none">
-                <div class="card border-0 shadow-sm text-center p-4 h-100 rounded-4 category-card overflow-hidden position-relative">
+                <div class="card border-0 shadow-sm text-center p-3 p-md-4 h-100 rounded-4 category-card overflow-hidden position-relative">
                     <!-- Garis aksen -->
                     <div class="position-absolute top-0 start-0 w-100" style="height: 5px; background: {{ $bg }};"></div>
                     
@@ -88,12 +88,12 @@
     <!-- TIPE KULIT (FILTER BY TIPE KULIT) -->
     <div class="card border-0 shadow-lg rounded-4 overflow-hidden mt-5">
         <div class="row g-0">
-            <div class="col-md-4 text-white p-5 d-flex flex-column justify-content-center" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+            <div class="col-md-4 text-white p-4 p-md-5 d-flex flex-column justify-content-center text-center text-md-start" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
                 <h3 class="fw-bold mb-3"><i class="fas fa-search me-2"></i>Cari Berdasarkan Tipe Kulit</h3>
                 <p class="mb-0 opacity-75">Tidak semua skincare cocok untuk semua orang. Temukan produk yang paling sesuai dengan jenis kulitmu di sini.</p>
             </div>
-            <div class="col-md-8 p-5 bg-white">
-                <div class="row text-center g-4">
+            <div class="col-md-8 p-4 p-md-5 bg-white">
+                <div class="row text-center g-3 g-md-4">
                     @foreach(['Kering' => ['icon' => '💧', 'color' => '#e3f2fd', 'text' => '#1976d2'], 
                               'Berminyak' => ['icon' => '✨', 'color' => '#fff8e1', 'text' => '#fbc02d'], 
                               'Sensitif' => ['icon' => '🌿', 'color' => '#e8f5e9', 'text' => '#388e3c'], 
@@ -114,7 +114,7 @@
 
     <!-- PROMO BANNER BOTTOM -->
     <div class="card border-0 rounded-4 mt-5 overflow-hidden text-center text-white" style="background: linear-gradient(135deg, #ff0844 0%, #ffb199 100%);">
-        <div class="card-body p-5">
+        <div class="card-body p-4 p-md-5">
             <h2 class="fw-bold mb-3"><i class="fas fa-bolt text-warning me-2"></i> Promo Brand Minggu Ini</h2>
             <p class="fs-5 opacity-75 mb-4">Diskon hingga 70% untuk produk pilihan dari brand favorit.</p>
             <a href="{{ route('flashsale') }}" class="btn btn-light btn-lg rounded-pill fw-bold text-danger px-5 shadow">
