@@ -11,7 +11,7 @@
     <div class="row">
         <!-- Sidebar Filter -->
         <div class="col-lg-3 col-md-4 mb-4">
-            <div class="offcanvas-md offcanvas-start border-0" tabindex="-1" id="filterOffcanvas" aria-labelledby="filterOffcanvasLabel">
+            <div class="offcanvas-md offcanvas-start border-0" tabindex="-1" id="filterOffcanvas" aria-labelledby="filterOffcanvasLabel" style="z-index: 9999;">
                 <div class="offcanvas-header border-bottom d-md-none" style="background: linear-gradient(135deg, #ffe6f2 0%, #ffb3c6 100%);">
                     <h5 class="offcanvas-title fw-bold text-dark" id="filterOffcanvasLabel"><i class="fas fa-filter text-pink me-2"></i>Filter Produk</h5>
                     <button type="button" class="btn-close shadow-none" data-bs-dismiss="offcanvas" data-bs-target="#filterOffcanvas" aria-label="Close"></button>
