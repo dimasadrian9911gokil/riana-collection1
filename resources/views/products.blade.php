@@ -28,7 +28,12 @@
         <!-- MAIN PRODUCT GRID -->
         <div class="col-lg-9">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2 class="fw-bold mb-0" id="produk">Semua Produk</h2>
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-outline-danger me-2 d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#filterOffcanvas">
+                        <i class="fas fa-filter"></i>
+                    </button>
+                    <h2 class="fw-bold mb-0" id="produk">Semua Produk</h2>
+                </div>
                 
                 <!-- SORTING FORM -->
                 <form action="{{ route('products') }}" method="GET" class="d-flex align-items-center">

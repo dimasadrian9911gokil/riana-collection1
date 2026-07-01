@@ -7,7 +7,7 @@
 <div class="container py-5">
 
     <!-- HERO / BANNER -->
-    <div class="p-5 rounded-4 text-white shadow-lg mb-5 position-relative overflow-hidden"
+    <div class="p-4 p-md-5 rounded-4 text-white shadow-lg mb-5 position-relative overflow-hidden"
     style="background:linear-gradient(135deg,#FF0055,#FF6699);">
         <!-- Dekorasi Background -->
         <div class="position-absolute top-0 end-0 opacity-25" style="transform: translate(20%, -20%);">
@@ -19,10 +19,10 @@
                 <span class="badge bg-warning text-dark px-3 py-2 fs-6 rounded-pill mb-3 shadow-sm">
                     <i class="fas fa-fire me-1"></i> Promo Terbatas!
                 </span>
-                <h1 class="display-3 fw-bolder mb-2" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.2);">
+                <h1 class="display-5 display-md-3 fw-bolder mb-2" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.2);">
                     FLASH SALE
                 </h1>
-                <p class="fs-4 mb-4 fw-light">
+                <p class="fs-5 fs-md-4 mb-4 fw-light">
                     Diskon gila-gilaan hingga <strong>70%</strong> untuk produk pilihan terbaik.
                 </p>
                 
@@ -106,15 +106,15 @@
     <div class="row">
         @forelse($flashSaleItems as $item)
         @php $product = $item->product; @endphp
-        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+        <div class="col-lg-3 col-md-4 col-6 mb-4">
             <div class="card h-100 border rounded-3 overflow-hidden" style="transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
                 <!-- Badge Diskon -->
-                <span class="position-absolute badge bg-danger" style="top: 10px; left: 10px; z-index: 2; padding: 6px 10px; border-radius: 4px;">
+                <span class="position-absolute badge bg-danger" style="top: 10px; left: 10px; z-index: 2; padding: 6px 10px; border-radius: 4px; font-size: clamp(0.7rem, 2.5vw, 0.9rem);">
                     -{{ round((($product->price - $item->discount_price)/$product->price)*100) }}%
                 </span>
                 
                 <!-- Area Gambar (Abu-abu) -->
-                <div style="height: 220px; background-color: #e0e0e0;" class="d-flex align-items-center justify-content-center p-4 position-relative">
+                <div style="height: clamp(140px, 40vw, 220px); background-color: #e0e0e0;" class="d-flex align-items-center justify-content-center p-3 p-md-4 position-relative">
                     <img src="{{ asset('storage/' . $product->image) }}" class="img-fluid" style="max-height: 100%; object-fit: contain; mix-blend-mode: multiply;">
                 </div>
                 
@@ -131,8 +131,8 @@
                     
                     <!-- Harga -->
                     <div class="mb-2">
-                        <h5 class="text-danger fw-bold mb-0">Rp{{ number_format($item->discount_price, 0, ',', '.') }}</h5>
-                        <small class="text-muted text-decoration-line-through">Rp{{ number_format($product->price, 0, ',', '.') }}</small>
+                        <h5 class="text-danger fw-bold mb-0" style="font-size: clamp(1rem, 4vw, 1.25rem);">Rp{{ number_format($item->discount_price, 0, ',', '.') }}</h5>
+                        <small class="text-muted text-decoration-line-through" style="font-size: 0.75rem;">Rp{{ number_format($product->price, 0, ',', '.') }}</small>
                     </div>
                     
                     <!-- Progress Bar Stok -->
@@ -146,15 +146,15 @@
                         </div>
                         
                         <!-- Tombol Aksi -->
-                        <div class="d-flex flex-column gap-2">
-                            <a href="{{ route('products.show', $product->id) }}" class="btn btn-outline-secondary btn-sm w-100 fw-bold" style="border-radius: 6px;">
-                                <i class="fas fa-eye me-1"></i> Lihat Detail Produk
+                        <div class="d-flex flex-column gap-2 mt-3">
+                            <a href="{{ route('products.show', $product->id) }}" class="btn btn-outline-secondary btn-sm w-100 fw-bold d-flex align-items-center justify-content-center" style="border-radius: 6px;">
+                                <i class="fas fa-eye me-1"></i> <span class="d-none d-sm-inline">Detail</span>
                             </a>
                             <form action="{{ route('cart.store') }}" method="POST" class="w-100 m-0">
                                 @csrf
                                 <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                <button type="submit" class="btn btn-pink btn-sm w-100 fw-bold" style="border-radius: 6px;">
-                                    <i class="fas fa-shopping-cart me-1"></i> Beli Sekarang
+                                <button type="submit" class="btn btn-pink btn-sm w-100 fw-bold d-flex align-items-center justify-content-center" style="border-radius: 6px;">
+                                    <i class="fas fa-shopping-cart me-1"></i> <span class="d-none d-sm-inline">Beli Sekarang</span><span class="d-sm-none">Beli</span>
                                 </button>
                             </form>
                         </div>
@@ -179,11 +179,11 @@
     <!-- MEMBER PROMO -->
     <div class="card border-0 rounded-4 mt-5 overflow-hidden" style="background: linear-gradient(90deg, #111, #333); color: white;">
         <div class="row g-0 align-items-center">
-            <div class="col-md-8 p-5">
+            <div class="col-md-8 p-4 p-md-5 text-center text-md-start">
                 <h2 class="fw-bold text-warning mb-3">
                     <i class="fas fa-crown me-2"></i> Eksklusif Member Riana
                 </h2>
-                <p class="fs-5 mb-0 opacity-75">
+                <p class="fs-6 fs-md-5 mb-0 opacity-75">
                     Gunakan kode voucher <strong>FLASHMEMBER</strong> saat checkout dan dapatkan tambahan diskon 10% khusus untuk produk bertanda Flash Sale!
                 </p>
             </div>

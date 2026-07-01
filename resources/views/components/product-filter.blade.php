@@ -1,7 +1,13 @@
-<div class="card border-0 shadow-sm mb-4">
-    <div class="card-body">
-        <form action="{{ route('products') }}" method="GET">
-            <h5 class="fw-bold mb-3">Filter Produk</h5>
+<div class="offcanvas-lg offcanvas-start" tabindex="-1" id="filterOffcanvas" aria-labelledby="filterOffcanvasLabel">
+    <div class="offcanvas-header border-bottom d-lg-none">
+        <h5 class="offcanvas-title fw-bold" id="filterOffcanvasLabel">Filter Produk</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#filterOffcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body flex-column p-0 p-lg-2">
+        <div class="card border-0 shadow-sm mb-4 w-100">
+            <div class="card-body">
+                <form action="{{ route('products') }}" method="GET">
+                    <h5 class="fw-bold mb-3 d-none d-lg-block">Filter Produk</h5>
             
             <input type="text" name="search" class="form-control mb-4" 
                    placeholder="Cari produk..." value="{{ request('search') }}">
@@ -46,6 +52,8 @@
                 <button type="submit" class="btn btn-danger">Terapkan Filter</button>
                 <a href="{{ route('products') }}" class="btn btn-outline-secondary">Reset</a>
             </div>
-        </form>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
