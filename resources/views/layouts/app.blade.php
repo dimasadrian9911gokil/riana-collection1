@@ -57,7 +57,16 @@
             opacity: 0.8;
         }
 
-        .nav-link { font-weight: 600; color: #333; transition: 0.3s; font-size: 0.95rem; }
+        .nav-link { 
+            font-weight: 600; 
+            color: #333; 
+            transition: 0.3s; 
+            font-size: 0.95rem; 
+            white-space: nowrap; 
+            display: flex; 
+            align-items: center; 
+        }
+        .nav-link i { margin-right: 6px !important; }
         .nav-link:hover { color: var(--primary-pink) !important; transform: translateY(-2px); }
         .search-box { width: 220px; border-radius: 20px; border: 1px solid #ddd; }
         .profile-img { width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--primary-pink); }
@@ -124,7 +133,7 @@
         </div>
     </div>
 
-    <nav class="navbar navbar-expand-lg navbar-mewah sticky-top py-3">
+    <nav class="navbar navbar-expand-xl navbar-mewah sticky-top py-3">
         <div class="container">
             <a class="navbar-brand logo-brand" href="{{ route('home') }}">
                 <img src="{{ asset('images/logo.png') }}" alt="Logo Riana Collection" class="me-2 shadow-sm" style="width: 35px; height: 35px; object-fit: cover; border-radius: 50%; border: 1px solid #ff80ab;">
@@ -149,7 +158,7 @@
 
                 <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item mx-2">
-                        <form action="{{ route('products') }}" method="GET">
+                        <form action="{{ route('products') }}" method="GET" class="d-flex">
                             <input type="text" name="search" class="form-control search-box" placeholder="Cari produk...">
                         </form>
                     </li>
