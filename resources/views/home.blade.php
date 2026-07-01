@@ -16,12 +16,12 @@
             
             <!-- Slide 1 -->
             <div class="carousel-item active" style="background: linear-gradient(135deg, #FF9A9E 0%, #FECFEF 100%);">
-                <div class="row align-items-center p-4 p-md-5" style="min-height: 400px;">
-                    <div class="col-md-6 text-center text-md-start ps-md-5 position-relative z-index-1">
-                        <span class="badge bg-white text-danger mb-3 px-3 py-2 rounded-pill shadow-sm"><i class="fas fa-star text-warning"></i> Koleksi Terbaru</span>
-                        <h1 class="display-4 fw-bold text-white mb-3" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.1);">Beauty Starts Here ✨</h1>
-                        <p class="fs-5 text-white mb-4 opacity-75">Temukan rangkaian perawatan kulit, makeup, dan parfum terbaik untuk memancarkan pesonamu.</p>
-                        <a href="{{ route('products') }}" class="btn btn-light btn-lg px-5 rounded-pill fw-bold shadow-sm" style="color: #FF6699;">Belanja Sekarang</a>
+                <div class="row align-items-center p-4 p-md-5" style="min-height: clamp(300px, 45vh, 400px);">
+                    <div class="col-md-6 text-center text-md-start ps-md-5 position-relative z-index-1 mt-4 mt-md-0">
+                        <span class="badge bg-white text-danger mb-3 px-3 py-2 rounded-pill shadow-sm" style="font-size: clamp(0.7rem, 2vw, 0.85rem);"><i class="fas fa-star text-warning"></i> Koleksi Terbaru</span>
+                        <h1 class="display-6 display-md-4 fw-bold text-white mb-3" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.1);">Beauty Starts Here ✨</h1>
+                        <p class="fs-6 fs-md-5 text-white mb-4 opacity-75">Temukan rangkaian perawatan kulit, makeup, dan parfum terbaik untuk memancarkan pesonamu.</p>
+                        <a href="{{ route('products') }}" class="btn btn-light px-4 px-md-5 py-2 py-md-3 rounded-pill fw-bold shadow-sm" style="color: #FF6699;">Belanja Sekarang</a>
                     </div>
                     <!-- Optional Image Placeholder (Hidden on mobile) -->
                     <div class="col-md-6 d-none d-md-flex justify-content-center align-items-center opacity-75">
@@ -32,12 +32,12 @@
 
             <!-- Slide 2 -->
             <div class="carousel-item" style="background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);">
-                <div class="row align-items-center p-4 p-md-5" style="min-height: 400px;">
-                    <div class="col-md-6 text-center text-md-start ps-md-5 position-relative z-index-1">
-                        <span class="badge bg-warning text-dark mb-3 px-3 py-2 rounded-pill shadow-sm"><i class="fas fa-bolt text-danger"></i> Diskon Kilat</span>
-                        <h1 class="display-4 fw-bold text-white mb-3" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.1);">Flash Sale Up To 70%</h1>
-                        <p class="fs-5 text-white mb-4 opacity-75">Jangan lewatkan penawaran eksklusif minggu ini. Stok sangat terbatas, borong sekarang juga!</p>
-                        <a href="{{ route('flashsale') }}" class="btn btn-warning btn-lg px-5 rounded-pill fw-bold shadow-sm text-dark">Lihat Promo</a>
+                <div class="row align-items-center p-4 p-md-5" style="min-height: clamp(300px, 45vh, 400px);">
+                    <div class="col-md-6 text-center text-md-start ps-md-5 position-relative z-index-1 mt-4 mt-md-0">
+                        <span class="badge bg-warning text-dark mb-3 px-3 py-2 rounded-pill shadow-sm" style="font-size: clamp(0.7rem, 2vw, 0.85rem);"><i class="fas fa-bolt text-danger"></i> Diskon Kilat</span>
+                        <h1 class="display-6 display-md-4 fw-bold text-white mb-3" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.1);">Flash Sale Up To 70%</h1>
+                        <p class="fs-6 fs-md-5 text-white mb-4 opacity-75">Jangan lewatkan penawaran eksklusif minggu ini. Stok sangat terbatas, borong sekarang juga!</p>
+                        <a href="{{ route('flashsale') }}" class="btn btn-warning px-4 px-md-5 py-2 py-md-3 rounded-pill fw-bold shadow-sm text-dark">Lihat Promo</a>
                     </div>
                     <div class="col-md-6 d-none d-md-flex justify-content-center align-items-center opacity-75">
                         <i class="fas fa-tags text-white" style="font-size: 12rem; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));"></i>
@@ -47,12 +47,12 @@
 
             <!-- Slide 3 -->
             <div class="carousel-item" style="background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);">
-                <div class="row align-items-center p-4 p-md-5" style="min-height: 400px;">
-                    <div class="col-md-6 text-center text-md-start ps-md-5 position-relative z-index-1">
-                        <span class="badge bg-success text-white mb-3 px-3 py-2 rounded-pill shadow-sm"><i class="fas fa-leaf text-white"></i> Rekomendasi Ahli</span>
-                        <h1 class="display-4 fw-bold text-white mb-3" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.1);">Kenali Tipe Kulitmu</h1>
-                        <p class="fs-5 text-white mb-4 opacity-75">Gunakan produk yang tepat untuk mendapatkan hasil maksimal. Kami punya solusi untuk semua jenis kulit.</p>
-                        <a href="{{ route('categories') }}" class="btn btn-success btn-lg px-5 rounded-pill fw-bold shadow-sm">Cari Solusi</a>
+                <div class="row align-items-center p-4 p-md-5" style="min-height: clamp(300px, 45vh, 400px);">
+                    <div class="col-md-6 text-center text-md-start ps-md-5 position-relative z-index-1 mt-4 mt-md-0">
+                        <span class="badge bg-success text-white mb-3 px-3 py-2 rounded-pill shadow-sm" style="font-size: clamp(0.7rem, 2vw, 0.85rem);"><i class="fas fa-leaf text-white"></i> Rekomendasi Ahli</span>
+                        <h1 class="display-6 display-md-4 fw-bold text-white mb-3" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.1);">Kenali Tipe Kulitmu</h1>
+                        <p class="fs-6 fs-md-5 text-white mb-4 opacity-75">Gunakan produk yang tepat untuk mendapatkan hasil maksimal. Kami punya solusi untuk semua jenis kulit.</p>
+                        <a href="{{ route('categories') }}" class="btn btn-success px-4 px-md-5 py-2 py-md-3 rounded-pill fw-bold shadow-sm">Cari Solusi</a>
                     </div>
                     <div class="col-md-6 d-none d-md-flex justify-content-center align-items-center opacity-75">
                         <i class="fas fa-hand-sparkles text-white" style="font-size: 12rem; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));"></i>
