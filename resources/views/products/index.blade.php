@@ -11,9 +11,15 @@
     <div class="row">
         <!-- Sidebar Filter -->
         <div class="col-lg-3 col-md-4 mb-4">
-            <div class="card border-0 rounded-4 p-4 position-relative" style="background: linear-gradient(180deg, #fff0f5 0%, #ffffff 100%); box-shadow: 0 10px 30px rgba(233, 30, 99, 0.1);">
-                <!-- Dekorasi -->
-                <div class="position-absolute top-0 start-0 w-100 rounded-top" style="height: 6px; background: linear-gradient(90deg, #FF6699, #ffb3c6);"></div>
+            <div class="offcanvas-md offcanvas-start border-0" tabindex="-1" id="filterOffcanvas" aria-labelledby="filterOffcanvasLabel">
+                <div class="offcanvas-header border-bottom d-md-none" style="background: linear-gradient(135deg, #ffe6f2 0%, #ffb3c6 100%);">
+                    <h5 class="offcanvas-title fw-bold text-dark" id="filterOffcanvasLabel"><i class="fas fa-filter text-pink me-2"></i>Filter Produk</h5>
+                    <button type="button" class="btn-close shadow-none" data-bs-dismiss="offcanvas" data-bs-target="#filterOffcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body p-0">
+                    <div class="card border-0 rounded-0 rounded-md-4 p-4 position-relative w-100" style="background: linear-gradient(180deg, #fff0f5 0%, #ffffff 100%); box-shadow: 0 10px 30px rgba(233, 30, 99, 0.1);">
+                        <!-- Dekorasi -->
+                        <div class="position-absolute top-0 start-0 w-100 rounded-top d-none d-md-block" style="height: 6px; background: linear-gradient(90deg, #FF6699, #ffb3c6);"></div>
                 
                 <form action="{{ route('products') }}" method="GET" id="filter-form">
                     <!-- Preserve sort param -->
@@ -49,29 +55,20 @@
                         <i class="fas fa-crown text-pink me-2" style="font-size: 1.1rem;"></i>
                         <h6 class="fw-bold mb-0 text-dark" style="letter-spacing: 0.5px;">Brand</h6>
                     </div>
-                    <ul class="nav nav-tabs nav-justified mb-3 border-0" id="brandTab" role="tablist">
-                      <li class="nav-item" role="presentation">
-                        <button class="nav-link active fw-bold border-0 bg-transparent rounded-0 pb-2 custom-tab-btn" id="brand-name-tab" data-bs-toggle="tab" data-bs-target="#brand-name" type="button" role="tab" style="font-size: 0.85rem;">Berdasarkan Nama</button>
-                      </li>
-                      <li class="nav-item" role="presentation">
-                        <button class="nav-link text-muted fw-bold border-0 bg-transparent rounded-0 pb-2 custom-tab-btn" id="brand-origin-tab" data-bs-toggle="tab" data-bs-target="#brand-origin" type="button" role="tab" style="font-size: 0.85rem;">Asal Negara</button>
-                      </li>
-                    </ul>
-                    <div class="tab-content mb-4" id="brandTabContent">
-                      <div class="tab-pane fade show active" id="brand-name" role="tabpanel">
+                    
+                    <div class="mb-4">
                         <div class="mb-3 position-relative">
                             <input type="text" class="form-control border-0 shadow-sm bg-white brand-search" placeholder="Cari Brand..." style="font-size: 0.85rem; border-radius: 20px; padding-left: 15px;">
                             <i class="fas fa-search position-absolute text-pink" style="right: 15px; top: 10px; font-size: 0.85rem;"></i>
                         </div>
                         <div class="brand-list overflow-auto pe-2 ps-2 custom-scrollbar" style="max-height: 180px;">
                             @foreach($brands as $brand)
-                                <div class="form-check mb-2 custom-checkbox-pink">
+                                <div class="form-check mb-2 custom-checkbox-pink brand-item">
                                     <input class="form-check-input shadow-none border-pink" type="checkbox" name="brand[]" value="{{ $brand->id }}" id="brand-{{ $brand->id }}" {{ in_array($brand->id, (array)request('brand')) ? 'checked' : '' }} onchange="document.getElementById('filter-form').submit();">
                                     <label class="form-check-label text-muted transition-03 hover-pink text-capitalize" style="font-size: 0.85rem; cursor: pointer;" for="brand-{{ $brand->id }}">{{ strtolower($brand->name) }}</label>
                                 </div>
                             @endforeach
                         </div>
-                      </div>
                     </div>
                     <hr class="mb-4" style="border-color: #ffb3c6; opacity: 0.5;">
 
@@ -166,12 +163,20 @@
                         <i class="fas fa-sync-alt"></i> Reset All Filters
                     </a>
                 </form>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- Product Listing -->
         <div class="col-lg-9 col-md-8">
             <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+                
+                <!-- Mobile Filter Toggle Button -->
+                <button class="btn btn-pink d-md-none rounded-pill fw-bold px-4 shadow-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#filterOffcanvas" style="width: 100%;">
+                    <i class="fas fa-filter me-2"></i> Filter Produk
+                </button>
+
                 <!-- Cute Banner Header -->
                 <div class="cute-banner-header d-flex align-items-center px-4 py-3 rounded-4 shadow-sm" style="background: linear-gradient(135deg, #ffe6f2 0%, #ffb3c6 100%); border: 2px dashed #ff99cc; position: relative; overflow: hidden;">
                     <!-- Sparkles Decoration -->
