@@ -35,8 +35,8 @@
         .btn-login:hover{ transform: translateY(-3px); box-shadow: 0 12px 25px rgba(216,79,123,.35); color:white; }
 
         @media(max-width:992px){
-            .left-panel { min-height: 200px !important; border-radius: 0 0 30px 30px; padding-bottom: 20px; display: block !important; }
-            .logo-title { font-size: 50px; margin-top: 10px; }
+            .left-panel { min-height: 220px !important; border-radius: 0 0 30px 30px; padding-bottom: 20px; display: block !important; }
+            .logo-title { font-size: clamp(30px, 8vw, 45px); margin-top: 5px; letter-spacing: 1px; }
             .footer-links { display: none !important; }
             .h-75 { height: auto !important; margin-top: 40px; }
             .right-panel { background: #f4f4f4; padding: 15px; margin-top: -30px; z-index: 10; align-items: flex-start; }
@@ -49,10 +49,10 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-7 left-panel">
-            <div class="d-flex flex-column justify-content-center align-items-center h-75">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo Riana Collection" class="img-fluid mb-3" style="width: 120px; height: 120px; object-fit: cover; border-radius: 50%; box-shadow: 0 4px 15px rgba(0,0,0,0.15); background: white; padding: 5px;">
-                <div class="logo-title">RIANA</div>
-                <div class="logo-title">COLLECTION</div>
+            <div class="d-flex flex-column justify-content-center align-items-center h-100 mt-4 mt-lg-0">
+                <img src="{{ asset('images/logo.png') }}" alt="Logo Riana Collection" class="img-fluid mb-2 mb-lg-3" style="width: clamp(80px, 20vw, 120px); height: clamp(80px, 20vw, 120px); object-fit: cover; border-radius: 50%; box-shadow: 0 4px 15px rgba(0,0,0,0.15); background: white; padding: 5px;">
+                <div class="logo-title px-2">RIANA</div>
+                <div class="logo-title px-2">COLLECTION</div>
             </div>
             <div class="footer-links">
                 <a href="#">Tentang Kami</a>

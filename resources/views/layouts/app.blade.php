@@ -127,9 +127,7 @@
     <nav class="navbar navbar-expand-lg navbar-mewah sticky-top py-3">
         <div class="container">
             <a class="navbar-brand logo-brand" href="{{ route('home') }}">
-                <div class="brand-icon-wrapper me-2">
-                    <i class="fas fa-crown"></i>
-                </div>
+                <img src="{{ asset('images/logo.png') }}" alt="Logo Riana Collection" class="me-2 shadow-sm" style="width: 35px; height: 35px; object-fit: cover; border-radius: 50%; border: 1px solid #ff80ab;">
                 <span class="brand-text">RIANA COLLECTION</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu">
