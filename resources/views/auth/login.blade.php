@@ -16,12 +16,6 @@
         .left-panel::before{ content:''; width:700px; height:700px; border-radius:50%; position:absolute; left:-200px; top:-150px; background:rgba(255,255,255,.08); }
         .left-panel::after{ content:''; width:280px; height:280px; border-radius:50%; position:absolute; right:80px; bottom:60px; background:rgba(255,255,255,.10); }
         .logo-title{ font-size:95px; font-weight:900; color:white; text-align:center; line-height:1; letter-spacing:3px; text-shadow:0 5px 15px rgba(0,0,0,.15); }
-        .tagline{ color:white; font-size:55px; font-weight:700; text-align:center; line-height:1.2; }
-        .btn-back{ color:white; border:2px solid white; padding:10px 25px; border-radius:30px; text-decoration:none; }
-        .btn-back:hover{ color:white; }
-        .language{ border:2px solid rgba(255,255,255,.5); border-radius:30px; overflow:hidden; }
-        .language span{ padding:10px 20px; display:inline-block; color:white; cursor:pointer; }
-        .language .active{ background:white; color:#333; }
         .footer-links{ position:absolute; bottom:20px; left:30px; }
         .footer-links a{ color:white; text-decoration:none; margin-right:15px; font-size:14px; }
 
@@ -41,12 +35,11 @@
         .btn-login:hover{ transform: translateY(-3px); box-shadow: 0 12px 25px rgba(216,79,123,.35); color:white; }
 
         @media(max-width:992px){
-            .left-panel { min-height: 280px !important; border-radius: 0 0 30px 30px; padding-bottom: 20px; display: block !important; }
+            .left-panel { min-height: 200px !important; border-radius: 0 0 30px 30px; padding-bottom: 20px; display: block !important; }
             .logo-title { font-size: 50px; margin-top: 10px; }
-            .tagline { font-size: 20px; margin-top: 10px !important; }
-            .footer-links, .fs-3 { display: none !important; }
-            .h-75 { height: auto !important; margin-top: 20px; }
-            .right-panel { background: #f4f4f4; padding: 15px; margin-top: -40px; z-index: 10; align-items: flex-start; }
+            .footer-links { display: none !important; }
+            .h-75 { height: auto !important; margin-top: 40px; }
+            .right-panel { background: #f4f4f4; padding: 15px; margin-top: -30px; z-index: 10; align-items: flex-start; }
             .login-card { padding: 30px 20px; border-radius: 20px; background: #ffffff; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: none; }
         }
     </style>
@@ -56,18 +49,9 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-7 left-panel">
-            <div class="p-4 d-flex justify-content-between">
-                <a href="{{ url('/') }}" class="btn-back">← Kembali</a>
-                <div class="language">
-                    <span class="active">ID</span>
-                    <span>EN</span>
-                </div>
-            </div>
             <div class="d-flex flex-column justify-content-center align-items-center h-75">
                 <div class="logo-title">RIANA</div>
                 <div class="logo-title">COLLECTION</div>
-                <div class="tagline mt-4">Satu akun untuk<br>akses semua layanan</div>
-                <div class="mt-5 text-white fs-3">Beauty • Skincare • Makeup • Self Care</div>
             </div>
             <div class="footer-links">
                 <a href="#">Tentang Kami</a>
