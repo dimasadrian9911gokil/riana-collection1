@@ -134,7 +134,7 @@
     </div>
 
     <nav class="navbar navbar-expand-xl navbar-mewah sticky-top py-3">
-        <div class="container">
+        <div class="container-fluid px-3 px-xl-5">
             <a class="navbar-brand logo-brand" href="{{ route('home') }}">
                 <img src="{{ asset('images/logo.png') }}" alt="Logo Riana Collection" class="me-2 shadow-sm" style="width: 35px; height: 35px; object-fit: cover; border-radius: 50%; border: 1px solid #ff80ab;">
                 <span class="brand-text">RIANA COLLECTION</span>
@@ -157,9 +157,9 @@
                 </ul>
 
                 <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item mx-2">
+                    <li class="nav-item mx-1 mx-lg-2">
                         <form action="{{ route('products') }}" method="GET" class="d-flex">
-                            <input type="text" name="search" class="form-control search-box" placeholder="Cari produk...">
+                            <input type="text" name="search" class="form-control search-box" placeholder="Cari produk..." style="width: 180px;">
                         </form>
                     </li>
                     
