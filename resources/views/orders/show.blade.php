@@ -57,9 +57,23 @@
                     <h5 class="fw-bold mb-4">Produk Dipesan</h5>
                     @foreach($order->items as $item)
                         <div class="row align-items-center mb-3">
-                            <div class="col-md-2"><img src="{{ asset('storage/' . ($item->product->image ?? 'default.png')) }}" class="img-fluid rounded-3 shadow-sm" alt="{{ $item->product_name }}"></div>
+                            <div class="col-md-2">
+                                @if($item->product)
+                                    <a href="{{ route('product.show', $item->product->slug) }}">
+                                        <img src="{{ asset('storage/' . ($item->product->image ?? 'default.png')) }}" class="img-fluid rounded-3 shadow-sm" alt="{{ $item->product_name }}">
+                                    </a>
+                                @else
+                                    <img src="{{ asset('storage/' . ($item->product->image ?? 'default.png')) }}" class="img-fluid rounded-3 shadow-sm" alt="{{ $item->product_name }}">
+                                @endif
+                            </div>
                             <div class="col-md-6">
-                                <h6 class="fw-bold mb-0">{{ $item->product_name }}</h6>
+                                <h6 class="fw-bold mb-0">
+                                    @if($item->product)
+                                        <a href="{{ route('product.show', $item->product->slug) }}" class="text-dark text-decoration-none hover-pink">{{ $item->product_name }}</a>
+                                    @else
+                                        {{ $item->product_name }}
+                                    @endif
+                                </h6>
                                 <small class="text-muted border rounded px-1 d-inline-block mt-1 mb-1" style="font-size: 0.75rem;">Varian: {{ $item->variant ?? 'Standard' }}</small><br>
                                 <small class="text-muted">Qty: {{ $item->qty }}</small>
                             </div>
@@ -178,6 +192,8 @@
     .cart-bg { background-color: #fff9fb; min-height: 100vh; }
     .card-3d { background: #ffffff; box-shadow: 0 10px 20px rgba(255, 102, 153, 0.08); border-radius: 20px; border-left: 6px solid #ff6699; }
     .text-pink { color: #ff6699; }
+    .hover-pink { transition: color 0.3s; }
+    .hover-pink:hover { color: #ff6699 !important; text-decoration: underline !important; }
     .bg-pink { background-color: #ff6699; }
     .btn-pink { background-color: #ff6699; color: white; }
     .btn-pink:hover { background-color: #e65586; color: white; }
