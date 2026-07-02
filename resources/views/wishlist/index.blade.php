@@ -6,8 +6,8 @@
 
 <style>
     .wishlist-bg {
-        background: linear-gradient(135deg, #fff0f5 0%, #ffe4e1 100%);
-        min-height: 100vh;
+        background-color: #f8f9fa;
+        min-height: calc(100vh - 300px);
     }
     .wishlist-card {
         border: none;
@@ -55,13 +55,33 @@
     }
 </style>
 
-<div class="wishlist-bg py-5">
+<!-- HERO BANNER -->
+<section class="position-relative py-5" style="background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%); overflow: hidden;">
+    <!-- Dekorasi Bulat -->
+    <div class="position-absolute rounded-circle bg-white opacity-25" style="width: 300px; height: 300px; top: -100px; left: -50px;"></div>
+    <div class="position-absolute rounded-circle bg-white opacity-25" style="width: 200px; height: 200px; bottom: -50px; right: 5%;"></div>
+    <div class="position-absolute rounded-circle bg-white opacity-25" style="width: 100px; height: 100px; top: 20%; left: 40%;"></div>
+    
+    <div class="container position-relative z-index-1 text-center py-4">
+        <span class="badge bg-white text-danger px-4 py-2 fs-6 rounded-pill mb-3 shadow-sm" style="letter-spacing: 1px;">
+            <i class="fas fa-heart me-2"></i> DAFTAR FAVORIT
+        </span>
+        <h1 class="display-5 fw-bold text-white mb-3" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.1);">
+            Wishlist Saya ✨
+        </h1>
+        <p class="fs-5 text-white opacity-75 fw-light mx-auto" style="max-width: 600px;">
+            Simpan semua produk kecantikan impianmu di sini sebelum kamu melakukan checkout.
+        </p>
+    </div>
+</section>
+
+<div class="wishlist-bg pb-5 pt-4">
     <div class="container">
-        <div class="d-flex align-items-center justify-content-between mb-4">
-            <h2 class="fw-bold text-dark mb-0 d-flex align-items-center">
-                <i class="fas fa-heart text-danger me-2"></i> Wishlist Saya
+        <div class="d-flex align-items-center justify-content-between mb-4 border-bottom pb-3">
+            <h3 class="fw-bold text-dark mb-0 d-flex align-items-center">
+                <i class="fas fa-box-open text-pink me-2"></i> Koleksi Tersimpan
                 <span class="badge bg-danger ms-3 rounded-pill fs-6" style="background: linear-gradient(45deg, #FF6699, #E91E63) !important;">{{ $wishlists->count() }} Produk</span>
-            </h2>
+            </h3>
         </div>
 
         @if(session('success'))
@@ -111,11 +131,11 @@
             @empty
             <div class="col-12 text-center py-5">
                 <div class="bg-white p-5 rounded-4 shadow-sm mx-auto" style="max-width: 500px;">
-                    <i class="far fa-heart fa-5x text-muted mb-4 opacity-50"></i>
+                    <i class="fas fa-heart-broken fa-5x text-pink mb-4 opacity-50"></i>
                     <h4 class="fw-bold text-dark">Wishlist masih kosong!</h4>
-                    <p class="text-muted mb-4">Kamu belum menambahkan produk apapun ke daftar keinginanmu. Yuk temukan produk impianmu sekarang!</p>
-                    <a href="{{ route('products') }}" class="btn btn-gradient-pink rounded-pill px-4 py-2 fw-bold text-white text-decoration-none">
-                        Mulai Belanja
+                    <p class="text-muted mb-4">Kamu belum menambahkan produk apapun ke daftar keinginanmu. Yuk jelajahi koleksi kami dan temukan produk impianmu sekarang!</p>
+                    <a href="{{ route('products') }}" class="btn btn-gradient-pink rounded-pill px-4 py-2 fw-bold text-white text-decoration-none shadow">
+                        Mulai Belanja Sekarang
                     </a>
                 </div>
             </div>
