@@ -79,7 +79,7 @@ class OrderController extends Controller
                     'total' => $total,
                     'courier' => $request->courier,
                     'payment_method' => $request->payment_method,
-                    'status' => 'menunggu_pembayaran',
+                    'status' => $request->payment_method === 'COD' ? 'menunggu_verifikasi' : 'menunggu_pembayaran',
                     'voucher_id' => $discount > 0 && isset($voucher) ? $voucher->id : null
                 ]);
 

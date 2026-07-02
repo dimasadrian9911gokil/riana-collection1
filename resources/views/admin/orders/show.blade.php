@@ -107,7 +107,28 @@
                 <h6 class="fw-bold text-dark mb-0"><i class="fas fa-receipt text-success me-2"></i>Bukti Pembayaran</h6>
             </div>
             <div class="card-body p-4 text-center">
-                @if($order->payment_proof)
+                @if($order->payment_method === 'COD')
+                    <div class="text-info py-3">
+                        <div class="bg-info bg-opacity-10 rounded-circle d-inline-flex justify-content-center align-items-center mb-3" style="width: 80px; height: 80px;">
+                            <i class="fas fa-handshake fa-3x text-info"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark">Bayar di Tempat (COD)</h5>
+                        <p class="mb-0 text-muted small">Pelanggan akan membayar pesanan ini secara langsung di toko saat melakukan pengambilan.</p>
+                        <p class="text-muted small mt-2">Silakan periksa ketersediaan barang dan ubah status pesanan ini menjadi <strong>Dikemas</strong> agar pelanggan tahu pesanannya sedang disiapkan.</p>
+                    </div>
+                    @if($order->status == 'menunggu_verifikasi')
+                        <form action="{{ route('admin.orders.status', $order->id) }}" method="POST" class="mt-3">
+                            @csrf @method('PATCH')
+                            <input type="hidden" name="status" value="dikemas">
+                            <button type="submit" class="btn btn-primary btn-sm w-100 fw-bold py-2"><i class="fas fa-box me-1"></i> Konfirmasi & Mulai Kemas</button>
+                        </form>
+                        <form action="{{ route('admin.orders.status', $order->id) }}" method="POST" class="mt-2">
+                            @csrf @method('PATCH')
+                            <input type="hidden" name="status" value="dibatalkan">
+                            <button type="submit" class="btn btn-outline-danger btn-sm w-100 fw-bold"><i class="fas fa-times me-1"></i> Batalkan Pesanan</button>
+                        </form>
+                    @endif
+                @elseif($order->payment_proof)
                     <a href="{{ asset('storage/' . $order->payment_proof) }}" target="_blank">
                         <img src="{{ asset('storage/' . $order->payment_proof) }}" class="img-fluid rounded border mb-3" style="max-height: 250px;" alt="Bukti Transfer">
                     </a>
