@@ -153,6 +153,7 @@
                             <form action="{{ route('cart.store') }}" method="POST" class="w-100 m-0">
                                 @csrf
                                 <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                <input type="hidden" name="buy_now" value="1">
                                 <button type="submit" class="btn btn-pink btn-sm w-100 fw-bold d-flex align-items-center justify-content-center" style="border-radius: 6px;">
                                     <i class="fas fa-shopping-cart me-1"></i> <span class="d-none d-sm-inline">Beli Sekarang</span><span class="d-sm-none">Beli</span>
                                 </button>
