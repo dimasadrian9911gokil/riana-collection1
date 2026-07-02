@@ -11,9 +11,32 @@ class WishlistController extends Controller
     /**
      * Tampilkan halaman wishlist pengguna.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $wishlists = Auth::user()->wishlists()->with('product')->get();
+        $query = Auth::user()->wishlists()->with('product');
+
+        if ($request->filled('search')) {
+            $query->whereHas('product', function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        $wishlists = $query->get();
+
+        if ($request->filled('sort')) {
+            if ($request->sort == 'price_low') {
+                $wishlists = $wishlists->sortBy(fn($w) => $w->product->price ?? 0);
+            } elseif ($request->sort == 'price_high') {
+                $wishlists = $wishlists->sortByDesc(fn($w) => $w->product->price ?? 0);
+            } elseif ($request->sort == 'oldest') {
+                $wishlists = $wishlists->sortBy('created_at');
+            } else {
+                $wishlists = $wishlists->sortByDesc('created_at');
+            }
+        } else {
+            $wishlists = $wishlists->sortByDesc('created_at');
+        }
+
         return view('wishlist.index', compact('wishlists'));
     }
 

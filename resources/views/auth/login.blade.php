@@ -35,7 +35,7 @@
         .btn-login:hover{ transform: translateY(-3px); box-shadow: 0 12px 25px rgba(216,79,123,.35); color:white; }
 
         @media(max-width:992px){
-            .left-panel { min-height: 220px !important; border-radius: 0 0 30px 30px; padding-bottom: 20px; display: block !important; }
+            .left-panel { min-height: 280px !important; border-radius: 0 0 30px 30px; padding-bottom: 50px !important; display: block !important; }
             .logo-title { font-size: clamp(30px, 8vw, 45px); margin-top: 5px; letter-spacing: 1px; }
             .footer-links { display: none !important; }
             .h-75 { height: auto !important; margin-top: 40px; }

@@ -77,11 +77,26 @@
 
 <div class="wishlist-bg pb-5 pt-4">
     <div class="container">
-        <div class="d-flex align-items-center justify-content-between mb-4 border-bottom pb-3">
+        <div class="d-flex align-items-center justify-content-between mb-4 border-bottom pb-3 flex-wrap gap-3">
             <h3 class="fw-bold text-dark mb-0 d-flex align-items-center">
                 <i class="fas fa-box-open text-pink me-2"></i> Koleksi Tersimpan
                 <span class="badge bg-danger ms-3 rounded-pill fs-6" style="background: linear-gradient(45deg, #FF6699, #E91E63) !important;">{{ $wishlists->count() }} Produk</span>
             </h3>
+            
+            <form action="{{ route('wishlist.index') }}" method="GET" class="d-flex align-items-center gap-2">
+                <div class="position-relative">
+                    <input type="text" name="search" class="form-control rounded-pill pe-4 ps-3 shadow-sm" style="border: 1.5px solid #FF6699; font-size: 0.9rem; min-width: 200px;" placeholder="Cari di wishlist..." value="{{ request('search') }}">
+                    <button type="submit" class="btn btn-link position-absolute p-0 text-pink shadow-none" style="top: 50%; right: 15px; transform: translateY(-50%); text-decoration: none;">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                <select name="sort" class="form-select rounded-pill px-3 shadow-sm" style="border: 1.5px solid #FF6699; font-size: 0.9rem; min-width: 150px; cursor: pointer;" onchange="this.form.submit()">
+                    <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>✨ Terbaru</option>
+                    <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>⏳ Terlama</option>
+                    <option value="price_low" {{ request('sort') == 'price_low' ? 'selected' : '' }}>💸 Termurah</option>
+                    <option value="price_high" {{ request('sort') == 'price_high' ? 'selected' : '' }}>💎 Termahal</option>
+                </select>
+            </form>
         </div>
 
         @if(session('success'))

@@ -18,7 +18,7 @@
         </div>
 
         {{-- Statistik Pesanan --}}
-        <div class="row mb-4">
+        <div class="row mb-4 flex-nowrap overflow-auto hide-scrollbar pb-2" style="-webkit-overflow-scrolling: touch;">
             @php
                 // Array statistik diperbarui agar mencakup status 'paid'
                 $stats = [
@@ -30,7 +30,7 @@
                 ];
             @endphp
             @foreach($stats as $stat)
-            <div class="col-md-2-4 mb-3">
+            <div class="col-5 col-sm-4 col-md-2-4 mb-3 flex-shrink-0">
                 <div class="card card-3d border-0 p-3 text-center">
                     <div class="fs-4 mb-1 {{ $stat[2] }}"><i class="fas {{ $stat[3] }}"></i></div>
                     <h2 class="fw-bold mb-0">{{ $stat[4] }}</h2>
@@ -119,8 +119,15 @@
     .btn-outline-pink { border: 1px solid #ff6699; color: #ff6699; }
     .btn-outline-pink:hover { background-color: #ff6699; color: white; }
     .border-pink { border: 1px solid #ff6699; }
-    /* Utility agar 5 kolom statistik pas di layar */
-    .col-md-2-4 { flex: 0 0 20%; max-width: 20%; }
+    
+    @media (min-width: 768px) {
+        /* Utility agar 5 kolom statistik pas di layar PC */
+        .col-md-2-4 { flex: 0 0 20%; max-width: 20%; }
+    }
+    
+    /* Hide scrollbar for horizontal scrolling on mobile */
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 </style>
 
 <script>
