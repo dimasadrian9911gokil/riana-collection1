@@ -24,11 +24,12 @@
                     <h5 class="fw-bold mb-4">Status Pesanan</h5>
                     <div class="d-flex justify-content-between text-center">
                         @php
+                            $isPickup = $order->courier === 'Pickup' || $order->payment_method === 'COD';
                             $steps = [
                                 ['label' => 'Dibuat',   'icon' => 'fa-file-alt'],
                                 ['label' => $order->payment_method === 'COD' ? 'Dikonfirmasi' : 'Dibayar', 'icon' => $order->payment_method === 'COD' ? 'fa-user-check' : 'fa-wallet'],
                                 ['label' => 'Diproses', 'icon' => 'fa-cog'],
-                                ['label' => 'Dikirim',  'icon' => 'fa-truck'],
+                                ['label' => $isPickup ? 'Siap Diambil' : 'Dikirim',  'icon' => $isPickup ? 'fa-store' : 'fa-truck'],
                                 ['label' => 'Selesai',  'icon' => 'fa-check-double']
                             ];
                             $currentIndex = 0;
