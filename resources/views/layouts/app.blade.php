@@ -159,18 +159,26 @@
                 <!-- Divider untuk HP -->
                 <hr class="d-xl-none my-3 text-secondary opacity-25">
                 
-                <ul class="navbar-nav ms-auto align-items-xl-center align-items-start">
-                    <li class="nav-item mb-2 mb-xl-0 mx-xl-2">
+                <!-- Search Box untuk HP -->
+                <div class="d-xl-none mb-3">
+                    <form action="{{ route('products') }}" method="GET" class="d-flex w-100">
+                        <input type="text" name="search" class="form-control search-box w-100" style="max-width: 100%;" placeholder="Cari produk...">
+                    </form>
+                </div>
+
+                <ul class="navbar-nav ms-auto flex-row align-items-center gap-4 gap-xl-0">
+                    <!-- Search Box untuk Desktop -->
+                    <li class="nav-item d-none d-xl-block mx-xl-2">
                         <form action="{{ route('products') }}" method="GET" class="d-flex w-100">
                             <input type="text" name="search" class="form-control search-box" placeholder="Cari produk...">
                         </form>
                     </li>
                     
-                    <li class="nav-item mb-2 mb-xl-0 mx-xl-2">
-                        <a class="nav-link position-relative" href="{{ route('cart.index') }}">
+                    <li class="nav-item mx-xl-2">
+                        <a class="nav-link position-relative p-0" href="{{ route('cart.index') }}">
                             <i class="fas fa-shopping-cart fs-5" style="color: #d81b60;"></i>
                             @if(($cartCount ?? 0) > 0)
-                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.65rem;">
                                     {{ $cartCount }}
                                 </span>
                             @endif
@@ -179,14 +187,14 @@
 
                     @auth
                     <!-- Notification Bell with Polling -->
-                    <li class="nav-item mb-2 mb-xl-0 mx-xl-2 dropdown">
-                        <a class="nav-link position-relative dropdown-toggle" href="#" id="navbarNotification" role="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="markNotificationsAsRead()">
-                            <i class="fas fa-bell fs-5"></i>
-                            <span id="notificationBadgeCounter" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem; display: none;">
+                    <li class="nav-item mx-xl-2 dropdown">
+                        <a class="nav-link position-relative dropdown-toggle p-0" href="#" id="navbarNotification" role="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="markNotificationsAsRead()">
+                            <i class="fas fa-bell fs-5 text-dark"></i>
+                            <span id="notificationBadgeCounter" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.65rem; display: none;">
                                 0
                             </span>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 notification-dropdown p-0" aria-labelledby="navbarNotification" style="width: 320px; max-height: 400px; overflow-y: auto;" id="notificationDropdownMenu">
+                        <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 notification-dropdown p-0 position-absolute" aria-labelledby="navbarNotification" style="width: 320px; max-height: 400px; overflow-y: auto;" id="notificationDropdownMenu">
                             <li class="p-3 border-bottom text-center">
                                 <h6 class="mb-0 fw-bold">Notifikasi</h6>
                             </li>
@@ -201,12 +209,12 @@
 
                     @auth
                     {{-- DROPDOWN DIPERBAIKI --}}
-                    <li class="nav-item mb-2 mb-xl-0 mx-xl-2 dropdown">
-                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="{{ Auth::user()->avatar ? asset('storage/'.Auth::user()->avatar) : 'https://ui-avatars.com/api/?name='.urlencode(Auth::user()->name).'&background=E91E63&color=fff' }}" class="profile-img me-2 shadow-sm border border-light rounded-circle" style="width:35px; height:35px; object-fit:cover;">
-                            <span class="fw-bold" style="color: var(--primary-pink);">{{ Auth::user()->name }}</span>
+                    <li class="nav-item mx-xl-2 dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center p-0" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="{{ Auth::user()->avatar ? asset('storage/'.Auth::user()->avatar) : 'https://ui-avatars.com/api/?name='.urlencode(Auth::user()->name).'&background=E91E63&color=fff' }}" class="profile-img shadow-sm border border-light rounded-circle" style="width:35px; height:35px; object-fit:cover;">
+                            <span class="fw-bold ms-2 d-none d-xl-inline" style="color: var(--primary-pink);">{{ explode(' ', Auth::user()->name)[0] }}</span>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end shadow">
+                        <ul class="dropdown-menu dropdown-menu-end shadow position-absolute">
                             <li class="profile-header p-3">
                                 <strong>{{ Auth::user()->name }}</strong><br>
                                 <small class="text-muted">{{ Auth::user()->email }}</small>
@@ -228,8 +236,8 @@
                         </ul>
                     </li>
                     @else
-                    <li class="nav-item">
-                        <a href="{{ route('login') }}" class="btn btn-outline-danger ms-2">Login</a>
+                    <li class="nav-item mx-xl-2">
+                        <a href="{{ route('login') }}" class="btn btn-outline-danger btn-sm rounded-pill px-3">Login</a>
                     </li>
                     @endauth
                 </ul>
