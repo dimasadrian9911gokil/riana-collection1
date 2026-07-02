@@ -25,20 +25,25 @@
                     <div class="d-flex justify-content-between text-center">
                         @php
                             $steps = [
-                                'menunggu_pembayaran' => ['label' => 'Dibuat',   'icon' => 'fa-file-alt'],
-                                'sudah_dibayar'       => ['label' => 'Dibayar',  'icon' => 'fa-wallet'],
-                                'dikemas'             => ['label' => 'Diproses', 'icon' => 'fa-cog'],
-                                'dikirim'             => ['label' => 'Dikirim',  'icon' => 'fa-truck'],
-                                'selesai'             => ['label' => 'Selesai',  'icon' => 'fa-check-double']
+                                ['label' => 'Dibuat',   'icon' => 'fa-file-alt'],
+                                ['label' => $order->payment_method === 'COD' ? 'Dikonfirmasi' : 'Dibayar', 'icon' => $order->payment_method === 'COD' ? 'fa-user-check' : 'fa-wallet'],
+                                ['label' => 'Diproses', 'icon' => 'fa-cog'],
+                                ['label' => 'Dikirim',  'icon' => 'fa-truck'],
+                                ['label' => 'Selesai',  'icon' => 'fa-check-double']
                             ];
-                            $currentIndex = array_search($order->status, array_keys($steps));
+                            $currentIndex = 0;
+                            if (in_array($order->status, ['menunggu_verifikasi', 'sudah_dibayar'])) $currentIndex = 1;
+                            elseif ($order->status == 'dikemas') $currentIndex = 2;
+                            elseif ($order->status == 'dikirim') $currentIndex = 3;
+                            elseif ($order->status == 'selesai') $currentIndex = 4;
+                            elseif ($order->status == 'dibatalkan') $currentIndex = -1;
                         @endphp
-                        @foreach($steps as $key => $data)
-                        <div class="flex-fill position-relative order-step" data-step-index="{{ $loop->index }}" data-step-key="{{ $key }}">
-                            <div class="rounded-circle mx-auto mb-2 step-icon {{ $loop->index <= $currentIndex ? 'bg-pink text-white' : 'bg-light text-secondary' }}" style="width: 45px; height: 45px; line-height: 45px; transition: 0.3s;">
+                        @foreach($steps as $index => $data)
+                        <div class="flex-fill position-relative order-step" data-step-index="{{ $index }}">
+                            <div class="rounded-circle mx-auto mb-2 step-icon {{ $index <= $currentIndex ? 'bg-pink text-white' : 'bg-light text-secondary' }}" style="width: 45px; height: 45px; line-height: 45px; transition: 0.3s;">
                                 <i class="fas {{ $data['icon'] }}"></i>
                             </div>
-                            <small class="fw-bold step-label {{ $loop->index <= $currentIndex ? 'text-pink' : 'text-muted' }}">{{ $data['label'] }}</small>
+                            <small class="fw-bold step-label {{ $index <= $currentIndex ? 'text-pink' : 'text-muted' }}">{{ $data['label'] }}</small>
                         </div>
                         @endforeach
                     </div>
@@ -128,8 +133,21 @@
                             </button>
                         </form>
                     @else
-                        <div id="payment-status-alert" class="alert alert-{{ $order->status == 'sudah_dibayar' ? 'success' : 'warning' }} border-0 rounded-4 text-center fw-bold">
-                            STATUS: {{ ucwords(str_replace('_', ' ', $order->status)) }}
+                        @if($order->payment_method === 'COD')
+                            <div class="alert alert-info border-0 rounded-4 text-center mb-3">
+                                <i class="fas fa-store fa-2x mb-2 text-info"></i>
+                                <h6 class="fw-bold mb-1">Bayar di Tempat (COD)</h6>
+                                @if($order->status == 'menunggu_verifikasi')
+                                    <p class="small mb-0">Pesanan Anda sedang menunggu konfirmasi admin. Kami akan segera menyiapkan barang Anda!</p>
+                                @elseif($order->status == 'dikemas')
+                                    <p class="small mb-0">Barang Anda sedang disiapkan. Silakan ambil dan bayar di toko.</p>
+                                @else
+                                    <p class="small mb-0">Silakan ambil barang di toko dan lakukan pembayaran secara langsung.</p>
+                                @endif
+                            </div>
+                        @endif
+                        <div id="payment-status-alert" class="alert alert-{{ in_array($order->status, ['sudah_dibayar', 'selesai']) ? 'success' : 'warning' }} border-0 rounded-4 text-center fw-bold">
+                            STATUS: {{ $order->payment_method === 'COD' && $order->status === 'menunggu_verifikasi' ? 'MENUNGGU KONFIRMASI ADMIN' : ucwords(str_replace('_', ' ', $order->status)) }}
                         </div>
                     @endif
 
@@ -245,15 +263,19 @@
                         }
 
                         // Update Timeline Progress
-                        const steps = ['menunggu_pembayaran', 'menunggu_verifikasi', 'sudah_dibayar', 'dikemas', 'dikirim', 'selesai'];
-                        const currentIndex = steps.indexOf(data.status);
+                        let stepIndex = 0;
+                        if (['menunggu_verifikasi', 'sudah_dibayar'].includes(data.status)) stepIndex = 1;
+                        else if (data.status === 'dikemas') stepIndex = 2;
+                        else if (data.status === 'dikirim') stepIndex = 3;
+                        else if (data.status === 'selesai') stepIndex = 4;
+                        else if (data.status === 'dibatalkan') stepIndex = -1;
                         
                         document.querySelectorAll('.order-step').forEach(function(el) {
                             const index = parseInt(el.getAttribute('data-step-index'));
                             const icon = el.querySelector('.step-icon');
                             const label = el.querySelector('.step-label');
                             
-                            if (index <= currentIndex) {
+                            if (index <= stepIndex) {
                                 icon.className = 'rounded-circle mx-auto mb-2 step-icon bg-pink text-white';
                                 label.className = 'fw-bold step-label text-pink';
                             } else {
