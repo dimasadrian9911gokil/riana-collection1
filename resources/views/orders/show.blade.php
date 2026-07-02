@@ -59,7 +59,7 @@
                         <div class="row align-items-center mb-3">
                             <div class="col-md-2">
                                 @if($item->product)
-                                    <a href="{{ route('products.show', $item->product->slug) }}">
+                                    <a href="{{ route('products.show', $item->product->id) }}">
                                         <img src="{{ asset('storage/' . ($item->product->image ?? 'default.png')) }}" class="img-fluid rounded-3 shadow-sm" alt="{{ $item->product_name }}">
                                     </a>
                                 @else
@@ -69,7 +69,7 @@
                             <div class="col-md-6">
                                 <h6 class="fw-bold mb-0">
                                     @if($item->product)
-                                        <a href="{{ route('products.show', $item->product->slug) }}" class="text-dark text-decoration-none hover-pink">{{ $item->product_name }}</a>
+                                        <a href="{{ route('products.show', $item->product->id) }}" class="text-dark text-decoration-none hover-pink">{{ $item->product_name }}</a>
                                     @else
                                         {{ $item->product_name }}
                                     @endif
