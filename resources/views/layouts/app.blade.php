@@ -156,7 +156,10 @@
                     @endauth
                 </ul>
 
-                <ul class="navbar-nav ms-auto align-items-xl-center align-items-start mt-3 mt-xl-0 border-xl-0 border-top pt-xl-0 pt-3">
+                <!-- Divider untuk HP -->
+                <hr class="d-xl-none my-3 text-secondary opacity-25">
+                
+                <ul class="navbar-nav ms-auto align-items-xl-center align-items-start">
                     <li class="nav-item mb-2 mb-xl-0 mx-xl-2">
                         <form action="{{ route('products') }}" method="GET" class="d-flex w-100">
                             <input type="text" name="search" class="form-control search-box" placeholder="Cari produk...">
