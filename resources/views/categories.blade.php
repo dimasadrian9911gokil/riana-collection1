@@ -26,11 +26,24 @@
 <div class="container pb-5">
 
     <!-- SEMUA KATEGORI (DINAMIS DARI DATABASE) -->
-    <div class="d-flex justify-content-between align-items-end mb-4 border-bottom pb-3">
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 border-bottom pb-3 gap-3">
         <div>
             <h3 class="fw-bold mb-0"><i class="fas fa-th-large text-pink me-2"></i>Pilihan Kategori</h3>
             <p class="text-muted mb-0">Temukan produk sesuai kebutuhanmu.</p>
         </div>
+        
+        <!-- Search & Filter Form -->
+        <form action="{{ route('categories') }}" method="GET" class="d-flex gap-2" style="max-width: 400px; width: 100%;">
+            <div class="input-group flex-grow-1 shadow-sm">
+                <span class="input-group-text bg-white border-end-0 text-muted"><i class="fas fa-search"></i></span>
+                <input type="text" name="search" class="form-control border-start-0" placeholder="Cari kategori..." value="{{ request('search') }}">
+            </div>
+            <select name="sort" class="form-select shadow-sm" onchange="this.form.submit()" style="width: auto; min-width: 150px;">
+                <option value="a-z" {{ request('sort') == 'a-z' ? 'selected' : '' }}>A - Z</option>
+                <option value="z-a" {{ request('sort') == 'z-a' ? 'selected' : '' }}>Z - A</option>
+                <option value="products" {{ request('sort') == 'products' ? 'selected' : '' }}>Produk Terbanyak</option>
+            </select>
+        </form>
     </div>
 
     <div class="row g-4 mb-5">

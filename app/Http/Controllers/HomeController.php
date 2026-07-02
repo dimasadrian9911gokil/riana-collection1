@@ -52,20 +52,54 @@ class HomeController extends Controller
     /**
      * Menampilkan daftar semua Brand (Database).
      */
-    public function brands(): View
+    public function brands(\Illuminate\Http\Request $request): View
     {
-        $brands = \App\Models\Brand::orderBy('name')->get();
+        $query = \App\Models\Brand::query();
+        
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->filled('sort')) {
+            if ($request->sort == 'z-a') {
+                $query->orderBy('name', 'desc');
+            } elseif ($request->sort == 'newest') {
+                $query->latest();
+            } else {
+                $query->orderBy('name', 'asc');
+            }
+        } else {
+            $query->orderBy('name', 'asc');
+        }
+
+        $brands = $query->get();
         return view('brands', compact('brands'));
     }
 
     /**
      * Menampilkan halaman kategori dinamis.
      */
-    public function categories(): View
+    public function categories(\Illuminate\Http\Request $request): View
     {
-        // Mengambil semua kategori dari database beserta jumlah produknya
-        $categories = Category::withCount('products')->get();
+        $query = Category::withCount('products');
+        
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
 
+        if ($request->filled('sort')) {
+            if ($request->sort == 'z-a') {
+                $query->orderBy('name', 'desc');
+            } elseif ($request->sort == 'products') {
+                $query->orderByDesc('products_count');
+            } else {
+                $query->orderBy('name', 'asc');
+            }
+        } else {
+            $query->orderBy('name', 'asc');
+        }
+        
+        $categories = $query->get();
         return view('categories', compact('categories'));
     }
 }
