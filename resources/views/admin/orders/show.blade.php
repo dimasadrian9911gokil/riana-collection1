@@ -219,9 +219,9 @@
                             <option value="menunggu_pembayaran" {{ $order->status == 'menunggu_pembayaran' ? 'selected' : '' }}>Menunggu Pembayaran</option>
                             <option value="menunggu_verifikasi" {{ $order->status == 'menunggu_verifikasi' ? 'selected' : '' }}>Menunggu Verifikasi</option>
                             <option value="sudah_dibayar" {{ $order->status == 'sudah_dibayar' ? 'selected' : '' }}>Sudah Dibayar</option>
-                            <option value="dikemas" {{ $order->status == 'dikemas' ? 'selected' : '' }}>Dikemas</option>
-                            <option value="dikirim" {{ $order->status == 'dikirim' ? 'selected' : '' }}>Dikirim</option>
-                            <option value="selesai" {{ $order->status == 'selesai' ? 'selected' : '' }}>Selesai</option>
+                            <option value="dikemas" {{ $order->status == 'dikemas' ? 'selected' : '' }}>{{ $order->courier === 'Pickup' ? 'Disiapkan / Dikemas' : 'Dikemas' }}</option>
+                            <option value="dikirim" {{ $order->status == 'dikirim' ? 'selected' : '' }}>{{ $order->courier === 'Pickup' ? 'Siap Diambil' : 'Dikirim' }}</option>
+                            <option value="selesai" {{ $order->status == 'selesai' ? 'selected' : '' }}>{{ $order->courier === 'Pickup' ? 'Selesai (Sudah Diambil)' : 'Selesai' }}</option>
                             <option value="dibatalkan" {{ $order->status == 'dibatalkan' ? 'selected' : '' }}>Dibatalkan</option>
                         </select>
                     </div>

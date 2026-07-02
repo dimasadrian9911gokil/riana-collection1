@@ -32,11 +32,19 @@
                                 ['label' => 'Selesai',  'icon' => 'fa-check-double']
                             ];
                             $currentIndex = 0;
-                            if (in_array($order->status, ['menunggu_verifikasi', 'sudah_dibayar'])) $currentIndex = 1;
-                            elseif ($order->status == 'dikemas') $currentIndex = 2;
-                            elseif ($order->status == 'dikirim') $currentIndex = 3;
-                            elseif ($order->status == 'selesai') $currentIndex = 4;
-                            elseif ($order->status == 'dibatalkan') $currentIndex = -1;
+                            if (in_array($order->status, ['menunggu_pembayaran', 'menunggu_verifikasi'])) {
+                                $currentIndex = 0;
+                            } elseif ($order->status == 'sudah_dibayar') {
+                                $currentIndex = 1;
+                            } elseif ($order->status == 'dikemas') {
+                                $currentIndex = 2;
+                            } elseif ($order->status == 'dikirim') {
+                                $currentIndex = 3;
+                            } elseif ($order->status == 'selesai') {
+                                $currentIndex = 4;
+                            } else {
+                                $currentIndex = -1;
+                            }
                         @endphp
                         @foreach($steps as $index => $data)
                         <div class="flex-fill position-relative order-step" data-step-index="{{ $index }}">
@@ -264,11 +272,19 @@
 
                         // Update Timeline Progress
                         let stepIndex = 0;
-                        if (['menunggu_verifikasi', 'sudah_dibayar'].includes(data.status)) stepIndex = 1;
-                        else if (data.status === 'dikemas') stepIndex = 2;
-                        else if (data.status === 'dikirim') stepIndex = 3;
-                        else if (data.status === 'selesai') stepIndex = 4;
-                        else if (data.status === 'dibatalkan') stepIndex = -1;
+                        if (['menunggu_pembayaran', 'menunggu_verifikasi'].includes(data.status)) {
+                            stepIndex = 0;
+                        } else if (data.status === 'sudah_dibayar') {
+                            stepIndex = 1;
+                        } else if (data.status === 'dikemas') {
+                            stepIndex = 2;
+                        } else if (data.status === 'dikirim') {
+                            stepIndex = 3;
+                        } else if (data.status === 'selesai') {
+                            stepIndex = 4;
+                        } else if (data.status === 'dibatalkan') {
+                            stepIndex = -1;
+                        }
                         
                         document.querySelectorAll('.order-step').forEach(function(el) {
                             const index = parseInt(el.getAttribute('data-step-index'));
