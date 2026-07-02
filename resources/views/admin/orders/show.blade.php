@@ -114,7 +114,13 @@
                         </div>
                         <h5 class="fw-bold text-dark">Bayar di Tempat (COD)</h5>
                         <p class="mb-0 text-muted small">Pelanggan akan membayar pesanan ini secara langsung di toko saat melakukan pengambilan.</p>
-                        <p class="text-muted small mt-2">Silakan periksa ketersediaan barang dan ubah status pesanan ini menjadi <strong>Dikemas</strong> agar pelanggan tahu pesanannya sedang disiapkan.</p>
+                        @if($order->status == 'menunggu_verifikasi')
+                            <p class="text-muted small mt-2">Silakan periksa ketersediaan barang dan ubah status pesanan ini menjadi <strong>Dikemas</strong> agar pelanggan tahu pesanannya sedang disiapkan.</p>
+                        @elseif($order->status == 'dikemas')
+                            <p class="text-muted small mt-2">Barang sedang disiapkan. Jika sudah selesai, klik tombol di bawah agar sistem memberi tahu pelanggan bahwa barang <strong>Siap Diambil</strong>.</p>
+                        @elseif($order->status == 'dikirim')
+                            <p class="text-muted small mt-2">Menunggu pelanggan datang ke toko untuk mengambil barang dan melakukan pembayaran. Jika sudah lunas, selesaikan pesanan.</p>
+                        @endif
                     </div>
                     @if($order->status == 'menunggu_verifikasi')
                         <form action="{{ route('admin.orders.status', $order->id) }}" method="POST" class="mt-3">
@@ -126,6 +132,18 @@
                             @csrf @method('PATCH')
                             <input type="hidden" name="status" value="dibatalkan">
                             <button type="submit" class="btn btn-outline-danger btn-sm w-100 fw-bold"><i class="fas fa-times me-1"></i> Batalkan Pesanan</button>
+                        </form>
+                    @elseif($order->status == 'dikemas')
+                        <form action="{{ route('admin.orders.status', $order->id) }}" method="POST" class="mt-3">
+                            @csrf @method('PATCH')
+                            <input type="hidden" name="status" value="dikirim">
+                            <button type="submit" class="btn btn-info text-white btn-sm w-100 fw-bold py-2"><i class="fas fa-store me-1"></i> Beri Notif Barang Siap Diambil</button>
+                        </form>
+                    @elseif($order->status == 'dikirim')
+                        <form action="{{ route('admin.orders.status', $order->id) }}" method="POST" class="mt-3">
+                            @csrf @method('PATCH')
+                            <input type="hidden" name="status" value="selesai">
+                            <button type="submit" class="btn btn-success btn-sm w-100 fw-bold py-2"><i class="fas fa-check-double me-1"></i> Pesanan Diambil & Lunas</button>
                         </form>
                     @endif
                 @elseif($order->payment_proof)
