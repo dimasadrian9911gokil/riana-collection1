@@ -211,7 +211,16 @@
             </div>
 
             <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4">
+                @php
+                    $userWishlists = [];
+                    if (auth()->check()) {
+                        $userWishlists = auth()->user()->wishlists()->pluck('product_id')->toArray();
+                    }
+                @endphp
                 @forelse($products as $product)
+                    @php
+                        $isWishlisted = in_array($product->id, $userWishlists);
+                    @endphp
                     <div class="col">
                         <div class="card h-100 product-card-v2 bg-white">
                             <a href="{{ route('products.show', $product->id) }}" class="text-decoration-none text-dark d-flex flex-column h-100">
@@ -229,8 +238,8 @@
                                         </div>
                                     @endif
 
-                                    <button class="btn btn-link position-absolute top-0 end-0 p-2 shadow-none heart-btn" onclick="event.preventDefault();">
-                                        <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16" class="heart-icon"><path d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/></svg>
+                                    <button class="btn btn-link position-absolute top-0 end-0 p-2 shadow-none heart-btn" onclick="toggleWishlist(event, {{ $product->id }}, this)">
+                                        <i class="{{ $isWishlisted ? 'fas text-pink' : 'far text-secondary' }} fa-heart heart-icon" style="font-size: 1.2rem; filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.1));"></i>
                                     </button>
                                     
                                     <!-- Online Deals Banner -->
@@ -367,6 +376,82 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+function toggleWishlist(event, productId, btnElement) {
+    event.preventDefault(); 
+    
+    @if(!auth()->check())
+        Swal.fire({
+            icon: 'info',
+            title: 'Harap Login',
+            text: 'Anda harus login untuk menyimpan wishlist',
+            confirmButtonColor: '#E91E63'
+        }).then(() => {
+            window.location.href = "{{ route('login') }}";
+        });
+        return;
+    @endif
+
+    let icon = btnElement.querySelector('.heart-icon');
+    let isCurrentlyAdded = icon.classList.contains('fas');
+
+    // Optimistic UI update
+    if (isCurrentlyAdded) {
+        icon.classList.remove('fas', 'text-pink');
+        icon.classList.add('far', 'text-secondary');
+    } else {
+        icon.classList.remove('far', 'text-secondary');
+        icon.classList.add('fas', 'text-pink');
+    }
+
+    fetch('{{ route('wishlist.toggle') }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({ product_id: productId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        Swal.fire({
+            toast: true,
+            position: 'bottom-end',
+            icon: data.status === 'added' ? 'success' : 'info',
+            title: data.message,
+            showConfirmButton: false,
+            timer: 2000
+        });
+        // If the status returned does not match our optimistic update, we revert
+        if (data.status === 'added' && isCurrentlyAdded) {
+            icon.classList.remove('far', 'text-secondary');
+            icon.classList.add('fas', 'text-pink');
+        } else if (data.status === 'removed' && !isCurrentlyAdded) {
+            icon.classList.remove('fas', 'text-pink');
+            icon.classList.add('far', 'text-secondary');
+        }
+    })
+    .catch(error => {
+        console.error('Error toggling wishlist:', error);
+        // Revert UI on error
+        if (isCurrentlyAdded) {
+            icon.classList.remove('far', 'text-secondary');
+            icon.classList.add('fas', 'text-pink');
+        } else {
+            icon.classList.remove('fas', 'text-pink');
+            icon.classList.add('far', 'text-secondary');
+        }
+        Swal.fire({
+            toast: true,
+            position: 'bottom-end',
+            icon: 'error',
+            title: 'Terjadi kesalahan jaringan',
+            showConfirmButton: false,
+            timer: 2000
+        });
+    });
+}
 </script>
 
 <style>
