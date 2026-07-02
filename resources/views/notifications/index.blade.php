@@ -113,7 +113,7 @@
                             @else
                                 <!-- Step 4 (Tiba) -->
                                 <div class="d-flex mb-4 position-relative z-index-2 {{ $isCompleted ? '' : 'opacity-50' }}">
-                                    @if($isCompleted)
+                                    @if($status === 'selesai')
                                     <div class="position-absolute rounded-circle bg-pink opacity-25 pulse-animation" style="width: 60px; height: 60px; left: -9px; top: -9px; z-index: 1; background-color: #ffb6c1;"></div>
                                     @endif
                                     <div class="rounded-circle {{ $isCompleted ? 'tracking-icon-active' : 'bg-light border border-2 border-secondary' }} d-flex justify-content-center align-items-center" style="width: 42px; height: 42px; z-index: 2;">
@@ -122,12 +122,15 @@
                                     <div class="ms-4 pt-1">
                                         <h6 class="fw-bold mb-1 {{ $isCompleted ? 'text-pink' : '' }}">Tiba di Tujuan</h6>
                                         <p class="text-muted small mb-0">Paket telah diterima.</p>
+                                        @if($status === 'selesai')
+                                        <span class="text-muted small">{{ $activeOrder->updated_at->format('d M Y, H:i') }}</span>
+                                        @endif
                                     </div>
                                 </div>
 
                                 <!-- Step 3 (Dalam Perjalanan) -->
                                 <div class="d-flex mb-4 position-relative z-index-2 {{ $isShipped ? '' : ($isCompleted ? '' : 'opacity-50') }}">
-                                    @if($isShipped)
+                                    @if($status === 'dikirim')
                                     <div class="position-absolute rounded-circle bg-pink opacity-25 pulse-animation" style="width: 60px; height: 60px; left: -9px; top: -9px; z-index: 1; background-color: #ffb6c1;"></div>
                                     @endif
                                     <div class="rounded-circle {{ $isShipped || $isCompleted ? 'tracking-icon-active' : 'bg-light border border-2 border-secondary' }} d-flex justify-content-center align-items-center position-relative" style="width: 42px; height: 42px; z-index: 2;">
@@ -136,12 +139,15 @@
                                     <div class="ms-4 pt-1">
                                         <h6 class="fw-bold {{ $isShipped ? 'text-pink' : '' }} mb-1">Sedang Dalam Perjalanan</h6>
                                         <p class="text-muted small mb-0">Paket sedang dikirim oleh kurir {{ $activeOrder->courier ?? 'Reguler' }}.</p>
+                                        @if($status === 'dikirim')
+                                        <span class="text-muted small">{{ $activeOrder->updated_at->format('d M Y, H:i') }}</span>
+                                        @endif
                                     </div>
                                 </div>
 
                                 <!-- Step 2 (Dikemas) -->
                                 <div class="d-flex mb-4 position-relative z-index-2 {{ $isPaid ? '' : ($isShipped || $isCompleted ? '' : 'opacity-50') }}">
-                                    @if($isPaid)
+                                    @if(in_array($status, ['sudah_dibayar', 'dikemas']))
                                     <div class="position-absolute rounded-circle bg-pink opacity-25 pulse-animation" style="width: 60px; height: 60px; left: -9px; top: -9px; z-index: 1; background-color: #ffb6c1;"></div>
                                     @endif
                                     <div class="rounded-circle {{ $isPaid || $isShipped || $isCompleted ? 'tracking-icon-active' : 'bg-light border border-2 border-secondary' }} d-flex justify-content-center align-items-center position-relative" style="width: 42px; height: 42px; z-index: 2;">
@@ -150,6 +156,9 @@
                                     <div class="ms-4 pt-1">
                                         <h6 class="fw-bold mb-1 {{ $isPaid ? 'text-pink' : '' }}">Pesanan Dikemas</h6>
                                         <p class="text-muted small mb-0">Pembayaran berhasil, pesanan sedang disiapkan.</p>
+                                        @if(in_array($status, ['sudah_dibayar', 'dikemas']))
+                                        <span class="text-muted small">{{ $activeOrder->updated_at->format('d M Y, H:i') }}</span>
+                                        @endif
                                     </div>
                                 </div>
                             @endif
