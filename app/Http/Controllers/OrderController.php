@@ -18,7 +18,9 @@ class OrderController extends Controller
         $user = Auth::user();
         
         $alamatUtama = $user->addresses()->where('is_default', 1)->first();
-        if (!$alamatUtama) {
+        $isAddressRequired = !($request->payment_method === 'COD' || $request->courier === 'Pickup');
+
+        if ($isAddressRequired && !$alamatUtama) {
             return back()->with('error', 'Silakan atur alamat pengiriman utama Anda terlebih dahulu di profil.');
         }
 
@@ -64,11 +66,11 @@ class OrderController extends Controller
 
                 $order = Order::create([
                     'user_id' => $user->id,
-                    'recipient_name' => $alamatUtama->recipient_name,
-                    'recipient_phone' => $alamatUtama->phone,
-                    'shipping_address' => $alamatUtama->address . ($alamatUtama->district ? ', Kec. ' . $alamatUtama->district : '') . ($alamatUtama->postal_code ? ' ' . $alamatUtama->postal_code : ''),
-                    'city' => $alamatUtama->city,
-                    'province' => $alamatUtama->province,
+                    'recipient_name' => $alamatUtama ? $alamatUtama->recipient_name : $user->name,
+                    'recipient_phone' => $alamatUtama ? $alamatUtama->phone : '-',
+                    'shipping_address' => $alamatUtama ? $alamatUtama->address . ($alamatUtama->district ? ', Kec. ' . $alamatUtama->district : '') . ($alamatUtama->postal_code ? ' ' . $alamatUtama->postal_code : '') : ($request->courier === 'Pickup' ? 'Ambil di Toko / Pickup' : 'Bayar di Tempat (COD)'),
+                    'city' => $alamatUtama ? $alamatUtama->city : '-',
+                    'province' => $alamatUtama ? $alamatUtama->province : '-',
                     'invoice' => 'INV-' . date('YmdHis') . '-' . $user->id,
                     'subtotal' => $subtotal,
                     'shipping_cost' => $shipping,

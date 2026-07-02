@@ -31,7 +31,7 @@
             <div class="row g-4">
                 <div class="col-lg-8">
                     {{-- Alamat --}}
-                    <div class="card border-0 shadow-sm rounded-4 mb-4">
+                    <div class="card border-0 shadow-sm rounded-4 mb-4" id="addressSection">
                         <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center rounded-top-4">
                             <h5 class="fw-bold mb-0 text-dark"><i class="fas fa-map-marker-alt text-pink me-2"></i> Alamat Pengiriman</h5>
                             <a href="{{ route('address.index') }}" class="btn btn-outline-pink btn-sm rounded-pill px-3 fw-bold">Kelola Alamat</a>
@@ -293,6 +293,16 @@
             if (radio.checked) {
                 selectedPayment = radio.value;
                 break;
+            }
+        }
+        
+        // Sembunyikan alamat jika Pickup atau COD
+        const addressSection = document.getElementById('addressSection');
+        if (addressSection) {
+            if (courierValue === 'Pickup' || selectedPayment === 'COD') {
+                addressSection.style.display = 'none';
+            } else {
+                addressSection.style.display = 'block';
             }
         }
 
